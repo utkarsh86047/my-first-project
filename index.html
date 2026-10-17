@@ -1,200 +1,124 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Specially For My Favorite Chasmish</title>
+    <title>Surprise!</title>
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
         body {
-            background-color: #06090e;
-            color: #f0f6fc;
-            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            position: relative;
-            user-select: none;
-            -webkit-user-select: none;
-        }
-
-        /* पीछे छुपा हुआ रोस्टिंग कार्ड */
-        .card {
-            background: #0d1117;
-            border: 3px solid #9333ea;
-            border-radius: 20px;
-            padding: 50px 25px;
             text-align: center;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-            max-width: 380px;
-            width: 85%;
-            z-index: 1;
-            border-image: linear-gradient(45deg, #9333ea, #ff7b72, #58a6ff) 1;
+            padding: 20px;
         }
 
-        .emoji-icon {
-            font-size: 6rem; /* चश्मे वाला इमोजी एकदम बड़ा */
-            display: inline-block;
-            animation: bounce 1s infinite alternate;
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .emoji {
+            font-size: 50px;
             margin-bottom: 20px;
         }
 
-        @keyframes bounce {
-            0% { transform: translateY(0px) scale(1); }
-            100% { transform: translateY(-15px) scale(1.05); }
-        }
-
-        .roast-headline {
-            color: #ff7b72;
-            font-size: 2.8rem; /* एकदम बड़े-बड़े अक्षर */
-            font-weight: 900;
-            margin: 15px 0;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px rgba(255,123,114,0.3);
-        }
-
-        .sub-message {
-            color: #8b949e;
-            font-size: 1.1rem;
-            line-height: 1.6;
-            margin-top: 15px;
+        .message {
+            font-size: 20px;
+            color: #333;
             font-weight: 600;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            line-height: 1.4;
         }
 
-        /* ऊपर का स्क्रैच करने वाला कैनवास */
-        #scratchCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 2;
-            cursor: pointer;
-        }
-
-        /* निर्देश टेक्स्ट */
-        .instruction {
-            position: absolute;
-            top: 12%;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #9333ea;
-            font-size: 1.1rem;
+        .btn {
+            background-color: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 18px;
             font-weight: bold;
-            z-index: 3;
-            text-align: center;
-            pointer-events: none;
-            background: rgba(6, 9, 14, 0.85);
-            padding: 10px 20px;
-            border-radius: 20px;
-            border: 1px solid #30363d;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            animation: pulse 1.5s infinite alternate;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+            transition: transform 0.1s ease, background 0.2s ease;
         }
 
-        @keyframes pulse {
-            0% { opacity: 0.7; transform: translateX(-50%) scale(0.95); }
-            100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
+        .btn:hover {
+            background-color: #ff5252;
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .final-style {
+            background: #fff0f0;
+            border: 2px dashed #ff4757;
+        }
+
+        .final-style .message {
+            color: #d63031;
+            font-size: 22px;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
-    <div class="instruction" id="hintText">✨ Scratch the screen for a 4K Vision Test ✨</div>
-
-    <!-- Canvas for Scratching -->
-    <canvas id="scratchCanvas"></canvas>
-
-    <!-- Hidden Roasting Content -->
-    <div class="card">
-        <div class="emoji-icon">🤓👓</div>
-        <div class="roast-headline">PADHAI KAR LE BITIYA</div>
-        <div class="sub-message">
-            "Stop wasting time scrolling drama with those huge 4K Ultra HD glasses. Get back to work!"
-        </div>
-        <p style="color: #9333ea; font-size: 0.85rem; margin-top: 30px; letter-spacing: 2px; font-weight: bold;">✨ ELITE 1% LEAGUE DETECTOR ✨</p>
+    <div class="card" id="mainCard">
+        <div class="emoji" id="emojiIcon">🎁</div>
+        <div class="message" id="msgText">आपके लिए एक सरप्राइज है! नीचे दिए बटन पर क्लिक करें।</div>
+        <button class="btn" id="nextBtn" onclick="nextMessage()">Open / Next ➔</button>
     </div>
 
     <script>
-        const canvas = document.getElementById('scratchCanvas');
-        const ctx = canvas.getContext('2d');
-        let isDrawing = false;
+        // क्लिक करने पर आने वाले मैसेजेस की लिस्ट
+        const messages = [
+            { text: "बस एक और क्लिक... 🤫", emoji: "🤫" },
+            { text: "थोड़ा और पेशेंस रखो! 😜", emoji: "😜" },
+            { text: "सोच रही होगी कि आगे क्या है? 🤔", emoji: "🤔" },
+            { text: "अरे रुकिए, इतना भी क्या जल्दी है! 😂", emoji: "😂" },
+            { text: "लास्ट वाला पक्का सरप्राइज है... 🙈", emoji: "🙈" },
+            { text: "कितना टाइम वेस्ट करेगी? अब जाकर पढ़ाई कर ले! 📚✍️", emoji: "🛑" }
+        ];
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            // डार्क मिस्ट्री लेयर पेंट करना
-            ctx.fillStyle = '#161b22';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // डॉट पैटर्न टेक्सचर
-            ctx.fillStyle = '#21262d';
-            for(let i=0; i<canvas.width; i+=40) {
-                for(let j=0; j<canvas.height; j+=40) {
-                    ctx.fillRect(i, j, 2, 2);
+        let currentIndex = 0;
+
+        function nextMessage() {
+            if (currentIndex < messages.length) {
+                // मैसेज और इमोजी अपडेट करें
+                document.getElementById("msgText").innerText = messages[currentIndex].text;
+                document.getElementById("emojiIcon").innerText = messages[currentIndex].emoji;
+
+                // अगर आख़िरी मैसेज है तो बटन छिपा दें और स्टाइल चेंज करें
+                if (currentIndex === messages.length - 1) {
+                    document.getElementById("nextBtn").style.display = "none";
+                    document.getElementById("mainCard").classList.add("final-style");
                 }
-            }
-        }
 
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        function startDrawing(e) {
-            isDrawing = true;
-            scratch(e);
-        }
-
-        function stopDrawing() {
-            isDrawing = false;
-            checkScratchPercentage();
-        }
-
-        function scratch(e) {
-            if (!isDrawing) return;
-            
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX || e.touches.clientX) - rect.left;
-            const y = (e.clientY || e.touches.clientY) - rect.top;
-
-            ctx.globalCompositeOperation = 'destination-out';
-            ctx.beginPath();
-            ctx.arc(x, y, 40); // स्क्रैच का साइज़ थोड़ा बड़ा कर दिया
-            ctx.fill();
-        }
-
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', scratch);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseleave', stopDrawing);
-
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchmove', scratch);
-        canvas.addEventListener('touchend', stopDrawing);
-
-        function checkScratchPercentage() {
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const pixels = imageData.data;
-            let clearedPixels = 0;
-
-            for (let i = 3; i < pixels.length; i += 4) {
-                if (pixels[i] === 0) clearedPixels++;
-            }
-
-            const percentage = (clearedPixels / (pixels.length / 4)) * 100;
-            
-            if (percentage > 40) {
-                canvas.style.transition = 'opacity 0.5s ease';
-                canvas.style.opacity = '0';
-                document.getElementById('hintText').style.display = 'none';
-                setTimeout(() => {
-                    canvas.style.display = 'none';
-                }, 500);
+                currentIndex++;
             }
         }
     </script>
+
 </body>
 </html>
