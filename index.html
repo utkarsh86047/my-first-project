@@ -20,6 +20,7 @@
             align-items: center;
             text-align: center;
             padding: 20px;
+            position: relative;
         }
 
         .card {
@@ -80,6 +81,20 @@
             font-size: 22px;
             font-weight: bold;
         }
+
+        /* Footer Credit Watermark */
+        .watermark {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #555;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 6px 12px;
+            border-radius: 12px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
     </style>
 </head>
 <body>
@@ -90,8 +105,10 @@
         <button class="btn" id="nextBtn" onclick="nextMessage()">Open / Next ➔</button>
     </div>
 
+    <!-- Credit Text -->
+    <div class="watermark">By Utkarsh Mishra</div>
+
     <script>
-        // क्लिक करने पर आने वाले मैसेजेस की लिस्ट
         const messages = [
             { text: "बस एक और क्लिक... 🤫", emoji: "🤫" },
             { text: "थोड़ा और पेशेंस रखो! 😜", emoji: "😜" },
@@ -105,11 +122,9 @@
 
         function nextMessage() {
             if (currentIndex < messages.length) {
-                // मैसेज और इमोजी अपडेट करें
                 document.getElementById("msgText").innerText = messages[currentIndex].text;
                 document.getElementById("emojiIcon").innerText = messages[currentIndex].emoji;
 
-                // अगर आख़िरी मैसेज है तो बटन छिपा दें और स्टाइल चेंज करें
                 if (currentIndex === messages.length - 1) {
                     document.getElementById("nextBtn").style.display = "none";
                     document.getElementById("mainCard").classList.add("final-style");
