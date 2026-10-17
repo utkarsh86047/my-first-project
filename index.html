@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Special Thank You</title>
+    <title>Just a Casual Vibe</title>
     <style>
         body {
             background-color: #06090e;
@@ -16,111 +16,186 @@
             margin: 0;
             overflow: hidden;
             position: relative;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
-        /* जादुई नाचते हुए कंफ़ेटी (Confetti Background) */
-        .confetti {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #ff7b72;
-            border-radius: 50%;
-            animation: fall infinite linear;
-            z-index: 1;
-            opacity: 0.7;
-        }
-        @keyframes fall {
-            0% { transform: translateY(-10vh) rotate(0deg); }
-            100% { transform: translateY(110vh) rotate(360deg); }
-        }
-
+        /* Peeche chhupa hua Casual Card */
         .card {
-            background: rgba(13, 17, 23, 0.85);
+            background: #0d1117;
             border: 2px solid #58a6ff;
             border-radius: 20px;
-            padding: 50px 30px;
+            padding: 40px 25px;
             text-align: center;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-            max-width: 420px;
-            width: 90%;
-            backdrop-filter: blur(10px);
-            z-index: 2;
-            animation: popUp 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border-image: linear-gradient(45deg, #58a6ff, #ff7b72, #79c0ff) 1;
+            max-width: 360px;
+            width: 85%;
+            z-index: 1;
+            border-image: linear-gradient(45deg, #58a6ff, #56d364, #79c0ff) 1;
         }
 
-        @keyframes popUp {
-            0% { transform: scale(0.7); opacity: 0; }
-            100% { transform: scale(1); opacity: 1; }
-        }
-
-        /* चमकता हुआ धड़कता दिल (Glowing Heart) */
-        .heart-icon {
-            font-size: 4.5rem;
+        .vibe-icon {
+            font-size: 4rem;
             display: inline-block;
-            animation: heartbeat 1.2s infinite ease-in-out alternate;
-            text-shadow: 0 0 20px rgba(255, 123, 114, 0.6);
-            margin-bottom: 15px;
+            animation: floatIcon 2s infinite ease-in-out alternate;
+            margin-bottom: 10px;
         }
 
-        @keyframes heartbeat {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.2); }
+        @keyframes floatIcon {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-10px); }
         }
 
         h1 {
             color: #58a6ff;
-            font-size: 2.6rem;
+            font-size: 2.2rem;
             margin: 10px 0;
             font-weight: 800;
-            letter-spacing: 1px;
-            background: linear-gradient(45deg, #58a6ff, #79c0ff);
+            background: linear-gradient(45deg, #58a6ff, #56d364);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
         }
 
         .message {
             color: #8b949e;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             line-height: 1.6;
             margin-top: 15px;
-            font-weight: 500;
+            font-style: italic;
         }
 
-        .signature {
-            color: #58a6ff;
-            font-size: 0.95rem;
-            margin-top: 30px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        /* Upar ka scratch karne wala canvas */
+        #scratchCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            cursor: pointer;
+        }
+
+        /* Instruction Text */
+        .instruction {
+            position: absolute;
+            top: 12%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #56d364;
+            font-size: 1.1rem;
             font-weight: bold;
-            opacity: 0.8;
+            z-index: 3;
+            text-align: center;
+            pointer-events: none;
+            background: rgba(6, 9, 14, 0.8);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid #30363d;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            animation: pulse 1.5s infinite alternate;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.7; transform: translateX(-50%) scale(0.95); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.05); }
         }
     </style>
 </head>
 <body>
-    <!-- JavaScript dynamic confetti particles -->
+
+    <div class="instruction" id="hintText">✨ Scratch the screen to match the vibe ✨</div>
+
+    <!-- Canvas for Scratching -->
+    <canvas id="scratchCanvas"></canvas>
+
+    <!-- Hidden Casual Content -->
+    <div class="card">
+        <div class="vibe-icon">☕✨</div>
+        <h1>THE REAL VIBE</h1>
+        <div class="message">
+            "PADAHAI karle."
+        </div>
+        <p style="color: #56d364; font-size: 0.8rem; margin-top: 25px; letter-spacing: 2px;">✨ ELITE 1% LEAGUE ✨</p>
+    </div>
+
     <script>
-        const colors = ['#58a6ff', '#ff7b72', '#79c0ff', '#ff9e3b', '#56d364'];
-        for (let i = 0; i < 50; i++) {
-            const confetti = document.createElement('div');
-            confetti.classList.add('confetti');
-            confetti.style.left = Math.random() * 100 + 'vw';
-            confetti.style.animationDuration = (Math.random() * 3 + 2) + 's';
-            confetti.style.animationDelay = (Math.random() * 2) + 's';
-            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.width = confetti.style.height = (Math.random() * 6 + 6) + 'px';
-            document.body.appendChild(confetti);
+        const canvas = document.getElementById('scratchCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            // Dark silver layer paint karna
+            ctx.fillStyle = '#161b22';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Subtle texture dot pattern
+            ctx.fillStyle = '#21262d';
+            for(let i=0; i<canvas.width; i+=40) {
+                for(let j=0; j<canvas.height; j+=40) {
+                    ctx.fillRect(i, j, 2, 2);
+                }
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function startDrawing(e) {
+            isDrawing = true;
+            scratch(e);
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            checkScratchPercentage();
+        }
+
+        function scratch(e) {
+            if (!isDrawing) return;
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX || e.touches.clientX) - rect.left;
+            const y = (e.clientY || e.touches.clientY) - rect.top;
+
+            ctx.globalCompositeOperation = 'destination-out';
+            ctx.beginPath();
+            ctx.arc(x, y, 35, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', scratch);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchmove', scratch);
+        canvas.addEventListener('touchend', stopDrawing);
+
+        function checkScratchPercentage() {
+            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const pixels = imageData.data;
+            let clearedPixels = 0;
+
+            for (let i = 3; i < pixels.length; i += 4) {
+                if (pixels[i] === 0) clearedPixels++;
+            }
+
+            const percentage = (clearedPixels / (pixels.length / 4)) * 100;
+            
+            if (percentage > 45) {
+                canvas.style.transition = 'opacity 0.5s ease';
+                canvas.style.opacity = '0';
+                document.getElementById('hintText').style.display = 'none';
+                setTimeout(() => {
+                    canvas.style.display = 'none';
+                }, 500);
+            }
         }
     </script>
-
-    <div class="card">
-        <div class="heart-icon">💝</div>
-        <h1>THANK YOU!</h1>
-        <div class="message">
-            "thank you sagun draw for my ed."
-        </div>
-        <div class="signature">✨ Crafted With Code ✨</div>
-    </div>
 </body>
 </html>
