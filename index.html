@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>The 1% League Dashboard</title>
+    <title>The Elite 1% League</title>
     <style>
         body {
-            background-color: #0d1117;
+            background-color: #080c10;
             color: #c9d1d9;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: '-apple-system', BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -15,40 +15,76 @@
             margin: 0;
         }
         .card {
-            background: #161b22;
-            border: 1px solid #30363d;
-            border-radius: 12px;
-            padding: 40px;
+            background: #12161f;
+            border: 1px solid #21262d;
+            border-radius: 16px;
+            padding: 45px;
             text-align: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
-            max-width: 500px;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.6);
+            max-width: 480px;
+            width: 100%;
         }
         h1 {
-            color: #58a6ff;
-            margin-bottom: 10px;
-            font-size: 2.2rem;
+            color: #ff7b72;
+            margin-bottom: 25px;
+            font-size: 2.4rem;
+            letter-spacing: 2px;
+            font-weight: 700;
         }
-        p {
-            color: #8b949e;
-            font-size: 1.1rem;
+        .quote-box {
+            background: #0d1117;
+            border: 1px solid #30363d;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            min-height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #adbac7;
+            font-size: 1.2rem;
+            font-style: italic;
             line-height: 1.6;
         }
-        .status-badge {
-            background-color: #238636;
-            color: white;
-            padding: 6px 16px;
-            border-radius: 20px;
+        button {
+            background-color: #ff7b72;
+            color: #0d1117;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 1.05rem;
             font-weight: bold;
-            display: inline-block;
-            margin-top: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        button:hover {
+            background-color: #f85149;
+            transform: translateY(-2px);
         }
     </style>
 </head>
 <body>
     <div class="card">
         <h1>THE 1% LEAGUE</h1>
-        <p>I will focus will my own criteria of power in own status.</p>
-        <div class="status-badge">Status: Silent Operator Mode [ON]</div>
+        <div class="quote-box" id="quoteText">
+            "Real connection isn't about physical touch; it's about finding the one who truly cares for your soul."
+        </div>
+        <button onclick="changeQuote()">Next Love Note</button>
     </div>
+
+    <script>
+        const loveQuotes = [
+            "In a world full of mechanical choices, true pleasure belongs to the one who stays loyal to a single soul.",
+            "I don't need a crowd to feel complete. Having just one person who genuinely cares and makes an effort is the ultimate peace.",
+            "Pure intent means keeping your distance out of respect, waiting for the connection that is completely deep and real.",
+            "Love isn't a quick temporary game. It's about building a safe, beautiful space where no one feels regular or used.",
+            "True care means choosing your silence over loud drama, protecting the bond that genuinely matters from the toxic crowd."
+        ];
+
+        function changeQuote() {
+            const randomIndex = Math.floor(Math.random() * loveQuotes.length);
+            document.getElementById('quoteText').innerText = `"${loveQuotes[randomIndex]}"`;
+        }
+    </script>
 </body>
 </html>
