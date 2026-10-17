@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Just a Casual Vibe</title>
+    <title>Specially For My Favorite Chasmish</title>
     <style>
         body {
             background-color: #06090e;
@@ -20,52 +20,51 @@
             -webkit-user-select: none;
         }
 
-        /* Peeche chhupa hua Casual Card */
+        /* पीछे छुपा हुआ रोस्टिंग कार्ड */
         .card {
             background: #0d1117;
-            border: 2px solid #58a6ff;
+            border: 3px solid #9333ea;
             border-radius: 20px;
-            padding: 40px 25px;
+            padding: 50px 25px;
             text-align: center;
             box-shadow: 0 15px 40px rgba(0, 0, 0, 0.8);
-            max-width: 360px;
+            max-width: 380px;
             width: 85%;
             z-index: 1;
-            border-image: linear-gradient(45deg, #58a6ff, #56d364, #79c0ff) 1;
+            border-image: linear-gradient(45deg, #9333ea, #ff7b72, #58a6ff) 1;
         }
 
-        .vibe-icon {
-            font-size: 4rem;
+        .emoji-icon {
+            font-size: 6rem; /* चश्मे वाला इमोजी एकदम बड़ा */
             display: inline-block;
-            animation: floatIcon 2s infinite ease-in-out alternate;
-            margin-bottom: 10px;
+            animation: bounce 1s infinite alternate;
+            margin-bottom: 20px;
         }
 
-        @keyframes floatIcon {
-            0% { transform: translateY(0px); }
-            100% { transform: translateY(-10px); }
+        @keyframes bounce {
+            0% { transform: translateY(0px) scale(1); }
+            100% { transform: translateY(-15px) scale(1.05); }
         }
 
-        h1 {
-            color: #58a6ff;
-            font-size: 2.2rem;
-            margin: 10px 0;
-            font-weight: 800;
-            background: linear-gradient(45deg, #58a6ff, #56d364);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1px;
+        .roast-headline {
+            color: #ff7b72;
+            font-size: 2.8rem; /* एकदम बड़े-बड़े अक्षर */
+            font-weight: 900;
+            margin: 15px 0;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(255,123,114,0.3);
         }
 
-        .message {
+        .sub-message {
             color: #8b949e;
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             line-height: 1.6;
             margin-top: 15px;
-            font-style: italic;
+            font-weight: 600;
         }
 
-        /* Upar ka scratch karne wala canvas */
+        /* ऊपर का स्क्रैच करने वाला कैनवास */
         #scratchCanvas {
             position: absolute;
             top: 0;
@@ -76,20 +75,20 @@
             cursor: pointer;
         }
 
-        /* Instruction Text */
+        /* निर्देश टेक्स्ट */
         .instruction {
             position: absolute;
             top: 12%;
             left: 50%;
             transform: translateX(-50%);
-            color: #56d364;
+            color: #9333ea;
             font-size: 1.1rem;
             font-weight: bold;
             z-index: 3;
             text-align: center;
             pointer-events: none;
-            background: rgba(6, 9, 14, 0.8);
-            padding: 8px 16px;
+            background: rgba(6, 9, 14, 0.85);
+            padding: 10px 20px;
             border-radius: 20px;
             border: 1px solid #30363d;
             box-shadow: 0 4px 12px rgba(0,0,0,0.5);
@@ -104,19 +103,19 @@
 </head>
 <body>
 
-    <div class="instruction" id="hintText">✨ Scratch the screen to match the vibe ✨</div>
+    <div class="instruction" id="hintText">✨ Scratch the screen for a 4K Vision Test ✨</div>
 
     <!-- Canvas for Scratching -->
     <canvas id="scratchCanvas"></canvas>
 
-    <!-- Hidden Casual Content -->
+    <!-- Hidden Roasting Content -->
     <div class="card">
-        <div class="vibe-icon">☕✨</div>
-        <h1>THE REAL VIBE</h1>
-        <div class="message">
-            "PADAHAI karle."
+        <div class="emoji-icon">🤓👓</div>
+        <div class="roast-headline">PADHAI KAR LE BITIYA</div>
+        <div class="sub-message">
+            "Stop wasting time scrolling drama with those huge 4K Ultra HD glasses. Get back to work!"
         </div>
-        <p style="color: #56d364; font-size: 0.8rem; margin-top: 25px; letter-spacing: 2px;">✨ ELITE 1% LEAGUE ✨</p>
+        <p style="color: #9333ea; font-size: 0.85rem; margin-top: 30px; letter-spacing: 2px; font-weight: bold;">✨ ELITE 1% LEAGUE DETECTOR ✨</p>
     </div>
 
     <script>
@@ -128,11 +127,11 @@
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             
-            // Dark silver layer paint karna
+            // डार्क मिस्ट्री लेयर पेंट करना
             ctx.fillStyle = '#161b22';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-            // Subtle texture dot pattern
+            // डॉट पैटर्न टेक्सचर
             ctx.fillStyle = '#21262d';
             for(let i=0; i<canvas.width; i+=40) {
                 for(let j=0; j<canvas.height; j+=40) {
@@ -163,7 +162,7 @@
 
             ctx.globalCompositeOperation = 'destination-out';
             ctx.beginPath();
-            ctx.arc(x, y, 35, 0, Math.PI * 2);
+            ctx.arc(x, y, 40); // स्क्रैच का साइज़ थोड़ा बड़ा कर दिया
             ctx.fill();
         }
 
@@ -187,7 +186,7 @@
 
             const percentage = (clearedPixels / (pixels.length / 4)) * 100;
             
-            if (percentage > 45) {
+            if (percentage > 40) {
                 canvas.style.transition = 'opacity 0.5s ease';
                 canvas.style.opacity = '0';
                 document.getElementById('hintText').style.display = 'none';
