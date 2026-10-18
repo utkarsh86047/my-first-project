@@ -12,39 +12,52 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
         body { background-color: var(--bg-color); color: var(--text-color); display: flex; justify-content: center; min-height: 100vh; padding: 15px; }
         .container { width: 100%; max-width: 800px; margin: 0 auto; }
+        
         #lock-screen { background: var(--card-bg); padding: 30px; border-radius: 16px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); margin-top: 50px; }
         input[type="password"] { width: 100%; padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: #fff; text-align: center; font-size: 16px; }
-        button { background: var(--accent-color); color: #0f172a; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.2s; }
+        button { background: var(--accent-color); color: #0f172a; border: none; padding: 12px 24px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: 0.2s; }
         button:hover { opacity: 0.9; }
+        button:disabled { background: #334155; color: #64748b; cursor: not-allowed; }
+
         #main-hub { display: none; }
         header { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px; border-bottom: 3px solid var(--accent-color); display: flex; justify-content: space-between; align-items: center; }
         .controls { background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
         select { flex: 1; padding: 10px; border-radius: 6px; background: #0f172a; color: #fff; border: 1px solid #334155; min-width: 200px; }
+        
         .card { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .q-title { font-size: 16px; font-weight: 600; margin-bottom: 15px; }
+        .q-title { font-size: 18px; font-weight: 600; margin-bottom: 15px; line-height: 1.4; }
         .options-grid { display: flex; flex-direction: column; gap: 10px; }
-        .option-btn { background: #0f172a; color: var(--text-color); text-align: left; padding: 12px; border-radius: 6px; border: 1px solid #334155; cursor: pointer; }
+        .option-btn { background: #0f172a; color: var(--text-color); text-align: left; padding: 14px; border-radius: 8px; border: 1px solid #334155; cursor: pointer; font-size: 15px; width: 100%; }
         .option-btn.correct { background: var(--success-color) !important; color: #fff !important; }
         .option-btn.incorrect { background: var(--error-color) !important; color: #fff !important; }
+        
         .explanation-box { display: none; margin-top: 15px; padding: 15px; background: rgba(56, 189, 248, 0.1); border-left: 4px solid var(--accent-color); border-radius: 4px; font-size: 14px; }
-        .score-card { background: var(--card-bg); padding: 20px; border-radius: 12px; text-align: center; margin-bottom: 20px; border: 2px solid var(--accent-color); display: none; }
-        .score-num { font-size: 32px; font-weight: bold; color: var(--accent-color); margin: 10px 0; }
+        
+        .nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; gap: 10px; }
+        .q-counter { text-align: center; font-size: 14px; color: var(--accent-color); font-weight: bold; margin-bottom: 10px; }
+
+        .score-card { background: var(--card-bg); padding: 30px; border-radius: 12px; text-align: center; margin-bottom: 20px; border: 2px solid var(--accent-color); display: none; }
+        .score-num { font-size: 48px; font-weight: bold; color: var(--accent-color); margin: 15px 0; }
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- Lock Screen -->
     <div id="lock-screen">
         <h2>CITS POT Master Hub</h2>
         <p style="color: var(--text-sub); margin-top: 5px;">Enter Access Password</p>
         <input type="password" id="pass-input" placeholder="Password daalo">
-        <button onclick="unlockApp()">Unlock Access</button>
+        <button onclick="unlockApp()" style="width: 100%;">Unlock Access</button>
         <p id="lock-msg" style="color: var(--error-color); margin-top: 10px;"></p>
     </div>
+
+    <!-- Main Hub UI -->
     <div id="main-hub">
         <header>
             <div><h3 style="color: var(--accent-color);">NIMI POT All-In-One Hub</h3><span style="font-size: 12px; color: var(--text-sub);">Developer: Utkarsh Mishra</span></div>
-            <button onclick="lockApp()" style="width: auto; padding: 6px 12px; font-size: 12px;">Lock</button>
+            <button onclick="lockApp()" style="padding: 6px 12px; font-size: 12px;">Lock</button>
         </header>
+        
         <div class="controls">
             <select id="module-select" onchange="startSelectedQuiz()">
                 <option value="m1">Module 1: Roles & Responsibilities of Instructor (30 MCQs)</option>
@@ -52,113 +65,133 @@
                 <option value="m3">Module 3: Syllabus Analysis & ADDIE Model (30 MCQs)</option>
                 <option value="master">🔥 All-POT Master Test (Randomized)</option>
             </select>
-            <button onclick="startSelectedQuiz()" style="width: auto;">Start Test</button>
+            <button onclick="startSelectedQuiz()">Start Test</button>
         </div>
-        <div id="score-card" class="score-card"><h3>Test Progress Summary</h3><div id="score-percent" class="score-num">0%</div><p id="score-details"></p></div>
-        <div id="quiz-container"></div>
+
+        <!-- CBT Quiz Box -->
+        <div id="quiz-wrapper">
+            <div id="q-counter" class="q-counter"></div>
+            <div id="quiz-container"></div>
+            <div class="nav-buttons" id="nav-buttons" style="display:none;">
+                <button id="prev-btn" onclick="prevQuestion()" disabled>← Previous</button>
+                <button id="next-btn" onclick="nextQuestion()">Next →</button>
+            </div>
+        </div>
+
+        <!-- Score Card Banner -->
+        <div id="score-card" class="score-card">
+            <h3>🎉 Test Completed!</h3>
+            <div id="score-percent" class="score-num">0%</div>
+            <p id="score-details" style="font-size: 18px;"></p>
+            <button onclick="startSelectedQuiz()" style="margin-top: 20px;">Re-Take Test</button>
+        </div>
     </div>
 </div>
+
 <script>
 const potDatabase = {
     m1: [
-        { q: "1. Craftsmen Training Scheme (CTS) ka main objective kya hai?", options: ["A) Academic research", "B) Skilled workforce (kaarigar) taiyar karna", "C) Sirf theory sikhana", "D) Office admin job"], ans: 1, exp: "CTS ka mukhya uddeshya industry ke liye skilled craftsmen ko practical level par taiyar karna hai." },
-        { q: "2. CITS (Craft Instructor Training Scheme) ka main aim kya hai?", options: ["A) Instructors ko Pedagogical skills aur training methodology dena", "B) School degree", "C) Direct B.Tech degree", "D) Non-technical diploma"], ans: 0, exp: "CITS instructors ko yeh sikhata hai ki apni trade knowledge ko trainees tak effectively kaise transfer karein." },
-        { q: "3. DGT ka full form kya hai?", options: ["A) Directorate General of Training", "B) Department of General Teaching", "C) Direct Government Training", "D) Division of Group Training"], ans: 0, exp: "DGT Ministry of Skill Development and Entrepreneurship ke andar aati hai." },
-        { q: "4. Ek acche instructor ki sabse mukhya personality characteristic kya honi chahiye?", options: ["A) Strict punishment dena", "B) Patience, empathy aur subject expertise", "C) Trainees se baat na karna", "D) Fast lecture dena"], ans: 1, exp: "Instructor mein dhairya, sahanubhuti aur subject ka pura gyan hona sabse zaroori hai." },
-        { q: "5. NCVT ka full form kya hai?", options: ["A) National Council for Vocational Training", "B) National Committee for Vocational Teaching", "C) New Center for Vocational Training", "D) National Course for Vocational Trades"], ans: 0, exp: "NCVT vocational training policies aur standards set karne wali apex body hai." },
-        { q: "6. NSQF ka full form kya hai?", options: ["A) National Skill Qualifications Framework", "B) National Student Quality Federation", "C) New Skill Quality Foundation", "D) National System for Qualification Framework"], ans: 0, exp: "NSQF competency-based framework hai jo qualifications ko levels mein organize karta hai." },
-        { q: "7. NSQF Level 4 kis training program ke barabar hota hai?", options: ["A) CTS (ITI Pass)", "B) CITS Instructor", "C) Diploma", "D) Degree"], ans: 0, exp: "CTS (ITI) level 4 qualification framework ke antargat aata hai." },
-        { q: "8. Instructor ke dwara workshop safety rules follow karwana kis domain mein aata hai?", options: ["A) Cognitive", "B) Affective / Behavioral", "C) Psychomotor", "D) Intellectual"], ans: 1, exp: "Safety attitude aur discipline 'Affective Domain' ka hiss hote hain." },
-        { q: "9. Vocational instruction mein 4-Step Method ka pehla step kaun sa hai?", options: ["A) Presentation", "B) Preparation", "C) Application", "D) Testing"], ans: 1, exp: "4-Step teaching method ka pehla step 'Preparation' (Introduction/Motivation) hota hai." },
-        { q: "10. Trainees ko job ke liye motivate karna instructor ki kis responsibility mein aata hai?", options: ["A) Administrative", "B) Pedagogical & Leadership", "C) Financial", "D) Legal"], ans: 1, exp: "Trainees ka morale aur interest badhana instructor ki leadership responsibility hai." },
-        { q: "11. ITI instructor ka primary role kya hai?", options: ["A) Facilitator aur Skill Trainer", "B) Shop Manager", "C) Evaluator only", "D) Paper Setter"], ans: 0, exp: "Instructor ek facilitator hota hai jo practical skills aur theoretical knowledge sikhata hai." },
-        { q: "12. Instructor ko workshop management mein sabse pehle kiska dhyan rakhna chahiye?", options: ["A) Safety aur 5S system", "B) Raw material wastage", "C) Fast output only", "D) Attendance sheet"], ans: 0, exp: "Safety First aur 5S system workshop efficiency ke liye sabse pehla rule hai." },
-        { q: "13. NCVET ka full form kya hai?", options: ["A) National Council for Vocational Education and Training", "B) National Center for Vocational Entrance Test", "C) National Council for Voluntary Educational Training", "D) New Center for Vocational Excellence Training"], ans: 0, exp: "NCVET vocational training ka umbrella regulator hai." },
-        { q: "14. Instructor ke liye 'Code of Ethics' ka kya matlab hai?", options: ["A) Professional rules aur moral values follow karna", "B) Dress code only", "C) Time table follow karna only", "D) Exam conduct karna"], ans: 0, exp: "Code of Ethics professional integrity aur moral conduct ko define karta hai." },
-        { q: "15. Trainees ke individual differences ko samajhna kyun zaroori hai?", options: ["A) Flexible teaching approach apnane ke liye", "B) Slow learners ko remove karne ke liye", "C) Grouping band karne ke liye", "D) Marks kam dene ke liye"], ans: 0, exp: "Har trainee ki learning speed alag hoti hai, isliye individual attention zaroori hai." },
-        { q: "16. Dual System of Training (DST) mein training kahan hoti hai?", options: ["A) ITI aur Industry dono mein", "B) Sirf ITI mein", "C) Sirf Online", "D) Sirf College mein"], ans: 0, exp: "DST mein theoretical background ITI mein aur practical industrial exposure industry mein milta hai." },
-        { q: "17. Training record maintain karne ke liye instructor dwara kaun sa register use hota hai?", options: ["A) Progress Chart aur Attendance Register", "B) Stock Register only", "C) Cash Book", "D) Visitor Register"], ans: 0, exp: "Progress chart har trainee ki practical skill development ka record rakhta hai." },
-        { q: "18. Instructor ka communicative clarity kyun zaroori hai?", options: ["A) Effective information delivery ke liye", "B) Loud voice dikhane ke liye", "C) Accent dikhane ke liye", "D) Time pass ke liye"], ans: 0, exp: "Spasht boli aur clear language se trainees instruction ko bina ambiguity ke samajhte hain." },
-        { q: "19. On-the-Job Training (OJT) ka mukhya labh kya hai?", options: ["A) Real industrial environment mein learning", "B) Classroom sitting", "C) Paper reading", "D) Exam exemption"], ans: 0, exp: "OJT se trainees real-world machinery aur production stress mein kaam karna sikhte hain." },
-        { q: "20. Micro-teaching session mein feedback kaun deta hai?", options: ["A) Peer trainees aur Supervisor", "B) Principal only", "C) Outside Industry manager", "D) Student parents"], ans: 0, exp: "Micro-teaching mein peers aur guide immediately feedback dete hain." },
-        { q: "21. Apprenticeship Training Scheme (ATS) kis act ke tehat chalti hai?", options: ["A) Apprentices Act 1961", "B) Factories Act 1948", "C) Industrial Dispute Act 1947", "D) Skill Act 2015"], ans: 0, exp: "ATS Apprentices Act 1961 ke antargat governed hoti hai." },
-        { q: "22. Skill competition ka mukhya purpose kya hota hai?", options: ["A) Excellence aur healthy competition ko encourage karna", "B) Commercial sales", "C) Failure candidates ka elimination", "D) Degree distribution"], ans: 0, exp: "WorldSkills aur National Skill competitions trainees mein perfection aur motivation laate hain." },
-        { q: "23. Workshop environment mein 5S ka 'Seiri' (Sort) kya darshata hai?", options: ["A) Unnecessary items ko hatana", "B) Safai karna", "C) Standardize karna", "D) Order mein rakhna"], ans: 0, exp: "Seiri ka matlab zaroori aur gair-zaroori saman ko alag karke gair-zaroori ko hatana hai." },
-        { q: "24. Housekeeping ka 5S system kis country se originated hai?", options: ["A) Japan", "B) USA", "C) Germany", "D) India"], ans: 0, exp: "5S methodology Japan se shuru hui thi." },
-        { q: "25. Instructor ka 'Empathy' attribute kya darshata hai?", options: ["A) Trainee ki jagah rakh kar uski problem samajhna", "B) Sympathy dikhana", "C) Strict decision lena", "D) Negligence"], ans: 0, exp: "Empathy ka matlab trainee ki jagah par hokar uski learning difficulty ko samajhna hai." },
-        { q: "26. CBT ka full form vocational assessment mein kya hai?", options: ["A) Computer Based Test", "B) Course Based Training", "C) Center Based Teaching", "D) Craft Based Training"], ans: 0, exp: "CBT ka matlab Computer Based Test hota hai." },
-        { q: "27. Instructor ke liye continuous self-development kyun zaroori hai?", options: ["A) Industry technologies ke sath updated rehne ke liye", "B) Salary hike only", "C) Transfer ke liye", "D) Routine duty ke liye"], ans: 0, exp: "New tools, automation aur pedagogy updates ke sath instructor ko hamesha updated rehna chahiye." },
-        { q: "28. Trainee ke performance drop hone par instructor ko sabse pehle kya karna chahiye?", options: ["A) Cause analyze karna aur counseling karna", "B) Immediately suspend karna", "C) Exam se rokna", "D) Ignore karna"], ans: 0, exp: "Performance drop ke piche ka reason analyze karke guide karna chahiye." },
-        { q: "29. Practical workshop session mein safety instruction kab deni chahiye?", options: ["A) Job shuru hone se pehle (Preparation stage mein)", "B) Job khatam hone ke baad", "C) Accident hone ke baad", "D) Exam time par"], ans: 0, exp: "Safety briefing hamesha demo aur job shuru hone se pehle di jati hai." },
-        { q: "30. Formative Assessment ka main outcome kya hota hai?", options: ["A) Continuous learning improvement aur feedback", "B) Final degree award", "C) Annual ranking", "D) Pass/Fail certificate"], ans: 0, exp: "Formative assessment training ke dauran continuous feedback aur improvement ke liye hota hai." }
+        { q: "1. Craftsmen Training Scheme (CTS) ka main objective kya hai?", options: ["Skilled workforce (kaarigar) taiyar karna", "Academic research", "Sirf theory sikhana", "Office admin job"], ansText: "Skilled workforce (kaarigar) taiyar karna", exp: "CTS ka mukhya uddeshya industry ke liye skilled craftsmen ko practical level par taiyar karna hai." },
+        { q: "2. CITS (Craft Instructor Training Scheme) ka main aim kya hai?", options: ["Instructors ko Pedagogical skills aur training methodology dena", "School degree", "Direct B.Tech degree", "Non-technical diploma"], ansText: "Instructors ko Pedagogical skills aur training methodology dena", exp: "CITS instructors ko yeh sikhata hai ki apni trade knowledge ko trainees tak effectively kaise transfer karein." },
+        { q: "3. DGT ka full form kya hai?", options: ["Directorate General of Training", "Department of General Teaching", "Direct Government Training", "Division of Group Training"], ansText: "Directorate General of Training", exp: "DGT Ministry of Skill Development and Entrepreneurship ke andar aati hai." },
+        { q: "4. Ek acche instructor ki sabse mukhya personality characteristic kya honi chahiye?", options: ["Patience, empathy aur subject expertise", "Strict punishment dena", "Trainees se baat na karna", "Fast lecture dena"], ansText: "Patience, empathy aur subject expertise", exp: "Instructor mein dhairya, sahanubhuti aur subject ka pura gyan hona sabse zaroori hai." },
+        { q: "5. NCVT ka full form kya hai?", options: ["National Council for Vocational Training", "National Committee for Vocational Teaching", "New Center for Vocational Training", "National Course for Vocational Trades"], ansText: "National Council for Vocational Training", exp: "NCVT vocational training policies aur standards set karne wali apex body hai." },
+        { q: "6. NSQF ka full form kya hai?", options: ["National Skill Qualifications Framework", "National Student Quality Federation", "New Skill Quality Foundation", "National System for Qualification Framework"], ansText: "National Skill Qualifications Framework", exp: "NSQF competency-based framework hai jo qualifications ko levels mein organize karta hai." },
+        { q: "7. NSQF Level 4 kis training program ke barabar hota hai?", options: ["CTS (ITI Pass)", "CITS Instructor", "Diploma", "Degree"], ansText: "CTS (ITI Pass)", exp: "CTS (ITI) level 4 qualification framework ke antargat aata hai." },
+        { q: "8. Instructor ke dwara workshop safety rules follow karwana kis domain mein aata hai?", options: ["Affective / Behavioral", "Cognitive", "Psychomotor", "Intellectual"], ansText: "Affective / Behavioral", exp: "Safety attitude aur discipline 'Affective Domain' ka hiss hote hain." },
+        { q: "9. Vocational instruction mein 4-Step Method ka pehla step kaun sa hai?", options: ["Preparation", "Presentation", "Application", "Testing"], ansText: "Preparation", exp: "4-Step teaching method ka pehla step 'Preparation' (Introduction/Motivation) hota hai." },
+        { q: "10. Trainees ko job ke liye motivate karna instructor ki kis responsibility mein aata hai?", options: ["Pedagogical & Leadership", "Administrative", "Financial", "Legal"], ansText: "Pedagogical & Leadership", exp: "Trainees ka morale aur interest badhana instructor ki leadership responsibility hai." },
+        { q: "11. ITI instructor ka primary role kya hai?", options: ["Facilitator aur Skill Trainer", "Shop Manager", "Evaluator only", "Paper Setter"], ansText: "Facilitator aur Skill Trainer", exp: "Instructor ek facilitator hota hai jo practical skills aur theoretical knowledge sikhata hai." },
+        { q: "12. Instructor ko workshop management mein sabse pehle kiska dhyan rakhna chahiye?", options: ["Safety aur 5S system", "Raw material wastage", "Fast output only", "Attendance sheet"], ansText: "Safety aur 5S system", exp: "Safety First aur 5S system workshop efficiency ke liye sabse pehla rule hai." },
+        { q: "13. NCVET ka full form kya hai?", options: ["National Council for Vocational Education and Training", "National Center for Vocational Entrance Test", "National Council for Voluntary Educational Training", "New Center for Vocational Excellence Training"], ansText: "National Council for Vocational Education and Training", exp: "NCVET vocational training ka umbrella regulator hai." },
+        { q: "14. Instructor ke liye 'Code of Ethics' ka kya matlab hai?", options: ["Professional rules aur moral values follow karna", "Dress code only", "Time table follow karna only", "Exam conduct karna"], ansText: "Professional rules aur moral values follow karna", exp: "Code of Ethics professional integrity aur moral conduct ko define karta hai." },
+        { q: "15. Trainees ke individual differences ko samajhna kyun zaroori hai?", options: ["Flexible teaching approach apnane ke liye", "Slow learners ko remove karne ke liye", "Grouping band karne ke liye", "Marks kam dene ke liye"], ansText: "Flexible teaching approach apnane ke liye", exp: "Har trainee ki learning speed alag hoti hai, isliye individual attention zaroori hai." },
+        { q: "16. Dual System of Training (DST) mein training kahan hoti hai?", options: ["ITI aur Industry dono mein", "Sirf ITI mein", "Sirf Online", "Sirf College mein"], ansText: "ITI aur Industry dono mein", exp: "DST mein theoretical background ITI mein aur practical industrial exposure industry mein milta hai." },
+        { q: "17. Training record maintain karne ke liye instructor dwara kaun sa register use hota hai?", options: ["Progress Chart aur Attendance Register", "Stock Register only", "Cash Book", "Visitor Register"], ansText: "Progress Chart aur Attendance Register", exp: "Progress chart har trainee ki practical skill development ka record rakhta hai." },
+        { q: "18. Instructor ka communicative clarity kyun zaroori hai?", options: ["Effective information delivery ke liye", "Loud voice dikhane ke liye", "Accent dikhane ke liye", "Time pass ke liye"], ansText: "Effective information delivery ke liye", exp: "Spasht boli aur clear language se trainees instruction ko bina ambiguity ke samajhte hain." },
+        { q: "19. On-the-Job Training (OJT) ka mukhya labh kya hai?", options: ["Real industrial environment mein learning", "Classroom sitting", "Paper reading", "Exam exemption"], ansText: "Real industrial environment mein learning", exp: "OJT se trainees real-world machinery aur production stress mein kaam karna sikhte hain." },
+        { q: "20. Micro-teaching session mein feedback kaun deta hai?", options: ["Peer trainees aur Supervisor", "Principal only", "Outside Industry manager", "Student parents"], ansText: "Peer trainees aur Supervisor", exp: "Micro-teaching mein peers aur guide immediately feedback dete hain." },
+        { q: "21. Apprenticeship Training Scheme (ATS) kis act ke tehat chalti hai?", options: ["Apprentices Act 1961", "Factories Act 1948", "Industrial Dispute Act 1947", "Skill Act 2015"], ansText: "Apprentices Act 1961", exp: "ATS Apprentices Act 1961 ke antargat governed hoti hai." },
+        { q: "22. Skill competition ka mukhya purpose kya hota hai?", options: ["Excellence aur healthy competition ko encourage karna", "Commercial sales", "Failure candidates ka elimination", "Degree distribution"], ansText: "Excellence aur healthy competition ko encourage karna", exp: "WorldSkills aur National Skill competitions trainees mein perfection aur motivation laate hain." },
+        { q: "23. Workshop environment mein 5S ka 'Seiri' (Sort) kya darshata hai?", options: ["Unnecessary items ko hatana", "Safai karna", "Standardize karna", "Order mein rakhna"], ansText: "Unnecessary items ko hatana", exp: "Seiri ka matlab zaroori aur gair-zaroori saman ko alag karke gair-zaroori ko hatana hai." },
+        { q: "24. Housekeeping ka 5S system kis country se originated hai?", options: ["Japan", "USA", "Germany", "India"], ansText: "Japan", exp: "5S methodology Japan se shuru hui thi." },
+        { q: "25. Instructor ka 'Empathy' attribute kya darshata hai?", options: ["Trainee ki jagah rakh kar uski problem samajhna", "Sympathy dikhana", "Strict decision lena", "Negligence"], ansText: "Trainee ki jagah rakh kar uski problem samajhna", exp: "Empathy ka matlab trainee ki jagah par hokar uski learning difficulty ko samajhna hai." },
+        { q: "26. CBT ka full form vocational assessment mein kya hai?", options: ["Computer Based Test", "Course Based Training", "Center Based Teaching", "Craft Based Training"], ansText: "Computer Based Test", exp: "CBT ka matlab Computer Based Test hota hai." },
+        { q: "27. Instructor ke liye continuous self-development kyun zaroori hai?", options: ["Industry technologies ke sath updated rehne ke liye", "Salary hike only", "Transfer ke liye", "Routine duty ke liye"], ansText: "Industry technologies ke sath updated rehne ke liye", exp: "New tools, automation aur pedagogy updates ke sath instructor ko hamesha updated rehna chahiye." },
+        { q: "28. Trainee ke performance drop hone par instructor ko sabse pehle kya karna chahiye?", options: ["Cause analyze karna aur counseling karna", "Immediately suspend karna", "Exam se rokna", "Ignore karna"], ansText: "Cause analyze karna aur counseling karna", exp: "Performance drop ke piche ka reason analyze karke guide karna chahiye." },
+        { q: "29. Practical workshop session mein safety instruction kab deni chahiye?", options: ["Job shuru hone se pehle (Preparation stage mein)", "Job khatam hone ke baad", "Accident hone ke baad", "Exam time par"], ansText: "Job shuru hone se pehle (Preparation stage mein)", exp: "Safety briefing hamesha demo aur job shuru hone se pehle di jati hai." },
+        { q: "30. Formative Assessment ka main outcome kya hota hai?", options: ["Continuous learning improvement aur feedback", "Final degree award", "Annual ranking", "Pass/Fail certificate"], ansText: "Continuous learning improvement aur feedback", exp: "Formative assessment training ke dauran continuous feedback aur improvement ke liye hota hai." }
     ],
     m2: [
-        { q: "1. Thorndike ke 'Law of Effect' ke mutabiq learning par kya prabhav padta hai?", options: ["A) Satisfying result milne par learning strong hoti hai", "B) Punishment se speed badhti hai", "C) Practice zaroori nahi hai", "D) Memory weak hoti hai"], ans: 0, exp: "Satisfying response S-R connection ko strengthen karta hai." },
-        { q: "2. Thorndike ka 'Law of Exercise' kis par sabse zyada zor deta hai?", options: ["A) Physical fitness", "B) Abhyas aur Repetition (Practice)", "C) Time management", "D) Strict punishment"], ans: 1, exp: "Law of Exercise kehta hai ki abhyas se S-R bond strong hota hai." },
-        { q: "3. Thorndike ka 'Law of Readiness' kya batata hai?", options: ["A) Learner jab mentally/physically taiyar ho tabhi sikh sakta hai", "B) Fast running", "C) Early arrival", "D) Exam readiness"], ans: 0, exp: "Readiness ka matlab hai ki learner learning state mein hone par hi effectively sikh pata hai." },
-        { q: "4. Cognitive Learning Domain kis se sambandhit hai?", options: ["A) Brain aur Intellectual Skills", "B) Physical movement", "C) Emotions aur Feelings", "D) Muscle strength"], ans: 0, exp: "Cognitive domain Dimaag, Thinking, Knowledge aur Problem Solving se judi hoti hai." },
-        { q: "5. Psychomotor Domain kis cheez par focus karta hai?", options: ["A) Manual & Physical Skills (Hands-on work)", "B) Memory recall", "C) Attitudes", "D) Emotional stability"], ans: 0, exp: "Vocational trades mein practical tools ka use Psychomotor Domain mein aata hai." },
-        { q: "6. Affective Domain ka main relate kis se hai?", options: ["A) Emotions, Attitudes aur Values", "B) Calculation", "C) Lathe Operation", "D) Writing speed"], ans: 0, exp: "Affective domain insaan ke bhavnao, attitude aur ethical values ko cover karta hai." },
-        { q: "7. Pavlov ke 'Classical Conditioning' experiment mein kis animal par study hui thi?", options: ["A) Dog", "B) Rat", "C) Cat", "D) Pigeon"], ans: 0, exp: "Ivan Pavlov ne dog aur bell ke saath conditioning experiment kiya tha." },
-        { q: "8. B.F. Skinner ne kis learning theory ka vikas kiya tha?", options: ["A) Operant Conditioning", "B) Classical Conditioning", "C) Insight Learning", "D) Social Learning"], ans: 0, exp: "Skinner ne Operant Conditioning (Reinforcement Theory) di thi." },
-        { q: "9. Positive Reinforcement ka learning par kya effect hota hai?", options: ["A) Desirable behavior repeat hone ki probability badhti hai", "B) Behavior stop ho jata hai", "C) Fear paida hota hai", "D) Memory loss hota hai"], ans: 0, exp: "Reward ya praise se desired action bar-bar dohrane ka incentive milta hai." },
-        { q: "10. Memory ke 3 main stages ka sahi kram kya hai?", options: ["A) Encoding -> Storage -> Retrieval", "B) Storage -> Encoding -> Retrieval", "C) Retrieval -> Storage -> Encoding", "D) Encoding -> Retrieval -> Storage"], ans: 0, exp: "Pehle brain information encode karta hai, fir store karta hai, aur zaroorat padne par retrieve karta hai." },
-        { q: "11. 'Forgetting Curve' ka concept kis psychologist ne diya tha?", options: ["A) Hermann Ebbinghaus", "B) Bloom", "C) Thorndike", "D) Pavlov"], ans: 0, exp: "Ebbinghaus ne bataya tha ki samay ke sath bina revision ke information fast fade hoti hai." },
-        { q: "12. Maslow's Hierarchy of Needs mein sabse basic/lower level need kaun si hai?", options: ["A) Physiological Needs (Roti, kapda, makan, rest)", "B) Safety Needs", "C) Self-Actualization", "D) Social Needs"], ans: 0, exp: "Insaan ki sabse buniyadi zarurat Physiological needs hoti hai." },
-        { q: "13. Maslow's Pyramid ka sabse highest level kaun sa hai?", options: ["A) Self-Actualization", "B) Esteem Needs", "C) Safety Needs", "D) Social Needs"], ans: 0, exp: "Self-Actualization ka matlab apne highest potential ko achieve karna hota hai." },
-        { q: "14. Motivation do tarah ki hoti hai: Intrinsic aur Extrinsic. Intrinsic motivation ka udaharan kya hai?", options: ["A) Inner satisfaction aur interest se sikhna", "B) Prize ke liye sikhna", "C) Punishment ke darr se sikhna", "D) Marks ke liye sikhna"], ans: 0, exp: "Intrinsic motivation andar ki ichha aur aatmasantushti se aati hai." },
-        { q: "15. Extrinsic Motivation ka udaharan kya hai?", options: ["A) Reward, Cash prize ya Certificate paane ke liye kaam karna", "B) Personal joy", "C) Internal satisfaction", "D) Curiosity"], ans: 0, exp: "Extrinsic motivation bahari incentives par nirbhar karti hai." },
-        { q: "16. Transfer of Training ka kya matlab hai?", options: ["A) Ek situation mein sikhi skill ko doosri situation mein apply karna", "B) College transfer hona", "C) Job switch karna", "D) Notes copy karna"], ans: 0, exp: "Sikhe hue gyan ko nayi condition mein upyog karna Transfer of Learning hai." },
-        { q: "17. Negative Transfer of Training kab hota hai?", options: ["A) Jab purani habit nayi learning mein rukavat bane", "B) Jab learning fast ho jaye", "C) Jab zero effect ho", "D) Jab full marks aayein"], ans: 0, exp: "Jaise Right-hand drive car chalane wale ko Left-hand drive car chalane mein dikkat aana." },
-        { q: "18. Adult Learning Principles ko kya kaha jata hai?", options: ["A) Andragogy", "B) Pedagogy", "C) Psychology", "D) Demography"], ans: 0, exp: "Adults ko sikhane ke vigyan ko Andragogy kehte hain (Knowles dwara given)." },
-        { q: "19. Pedagogy aur Andragogy mein mukhya antar kya hai?", options: ["A) Pedagogy child-centered hoti hai, Andragogy adult/self-directed hoti hai", "B) Pedagogy adult ke liye hai", "C) Dono same hain", "D) Dono non-technical hain"], ans: 0, exp: "Pedagogy mein teacher centered approach hota hai jabki Andragogy self-directed hoti hai." },
-        { q: "20. Sensory Memory ka duration kitna hota hai?", options: ["A) Less than 1-2 seconds", "B) 24 hours", "C) 1 week", "D) Permanent"], ans: 0, exp: "Sensory memory seconds ke fraction ke liye sensation retain karti hai." },
-        { q: "21. Short-Term Memory (STM) ki capacity kitni hoti hai?", options: ["A) 7 ± 2 items (Miller's Magic Number)", "B) Unlimited", "C) 100 items", "D) Only 1 item"], ans: 0, exp: "Miller ke anusar human brain ek baar mein STM mein 5-9 chunks store karta hai." },
-        { q: "22. Stimulus-Response (S-R) Bond ki strength badhane ke liye kya zaroori hai?", options: ["A) Practice aur Immediate Feedback", "B) Long gap", "C) Delay in test", "D) No practice"], ans: 0, exp: "Immediate feedback aur repetition se S-R connection strong hota hai." },
-        { q: "23. Gestalt Theory ka main emphasis kis par hai?", options: ["A) Learning as a Whole (Whole is greater than sum of parts)", "B) Rote learning", "C) Step by step memorization", "D) Trial and error only"], ans: 0, exp: "Gestalt theory 'Perception of Whole' aur Insight learning par focus karti hai." },
-        { q: "24. Kohler ke Chimpanzee experiment se kaun sa learning concept aaya?", options: ["A) Insight Learning (Aha! Moment)", "B) Conditioning", "C) Rote Learning", "D) Rhythmic learning"], ans: 0, exp: "Sultan naam ke chimpanzee ne problem ko suddenly 'Insight' se solve kiya tha." },
-        { q: "25. Learning curve mein 'Plateau' ka kya matlab hota hai?", options: ["A) Aisa period jahan learning progress stop/flat lagti hai", "B) Rapid improvement", "C) Exam failure", "D) Memory peak"], ans: 0, exp: "Learning plateau temporary stagnation phase hota hai." },
-        { q: "26. Individual Differences ke mukhya karak kya hain?", options: ["A) Heredity aur Environment", "B) Clothes aur Style", "C) Weather only", "D) School distance"], ans: 0, exp: "Aanuvanshikta (Heredity) aur Vatavaran (Environment) individual differences banate hain." },
-        { q: "27. Attention span badhane ke liye instructor ko kya karna chahiye?", options: ["A) Teaching aids aur active interaction use karna", "B) Continuous 3-hour lecture dena", "C) Dark room mein padhana", "D) Silent reading bolna"], ans: 0, exp: "Media variation aur interaction se trainees ka attention sustain rehta hai." },
-        { q: "28. Habit Formation mein sabse pehla step kya hota hai?", options: ["A) Cue / Trigger", "B) Reward", "C) Routine", "D) Punishment"], ans: 0, exp: "Habit loop: Cue -> Routine -> Reward se banti hai." },
-        { q: "29. Skill Learning kis domain ke antargat aati hai?", options: ["A) Psychomotor Domain", "B) Affective Domain", "C) Cognitive Domain", "D) Social Domain"], ans: 0, exp: "Hands-on muscular control psychomotor domain hota hai." },
-        { q: "30. Bloom's Taxonomy ke Cognitive Domain ke 6 levels mein sabse basic level kaun sa hai?", options: ["A) Remembering / Knowledge", "B) Understanding", "C) Application", "D) Analysis"], ans: 0, exp: "Knowledge/Remembering cognitive pyramid ka foundation level hai." }
+        { q: "1. Thorndike ke 'Law of Effect' ke mutabiq learning par kya prabhav padta hai?", options: ["Satisfying result milne par learning strong hoti hai", "Punishment se speed badhti hai", "Practice zaroori nahi hai", "Memory weak hoti hai"], ansText: "Satisfying result milne par learning strong hoti hai", exp: "Satisfying response S-R connection ko strengthen karta hai." },
+        { q: "2. Thorndike ka 'Law of Exercise' kis par sabse zyada zor deta hai?", options: ["Abhyas aur Repetition (Practice)", "Physical fitness", "Time management", "Strict punishment"], ansText: "Abhyas aur Repetition (Practice)", exp: "Law of Exercise kehta hai ki abhyas se S-R bond strong hota hai." },
+        { q: "3. Thorndike ka 'Law of Readiness' kya batata hai?", options: ["Learner jab mentally/physically taiyar ho tabhi sikh sakta hai", "Fast running", "Early arrival", "Exam readiness"], ansText: "Learner jab mentally/physically taiyar ho tabhi sikh sakta hai", exp: "Readiness ka matlab hai ki learner learning state mein hone par hi effectively sikh pata hai." },
+        { q: "4. Cognitive Learning Domain kis se sambandhit hai?", options: ["Brain aur Intellectual Skills", "Physical movement", "Emotions aur Feelings", "Muscle strength"], ansText: "Brain aur Intellectual Skills", exp: "Cognitive domain Dimaag, Thinking, Knowledge aur Problem Solving se judi hoti hai." },
+        { q: "5. Psychomotor Domain kis cheez par focus karta hai?", options: ["Manual & Physical Skills (Hands-on work)", "Memory recall", "Attitudes", "Emotional stability"], ansText: "Manual & Physical Skills (Hands-on work)", exp: "Vocational trades mein practical tools ka use Psychomotor Domain mein aata hai." },
+        { q: "6. Affective Domain ka main relate kis se hai?", options: ["Emotions, Attitudes aur Values", "Calculation", "Lathe Operation", "Writing speed"], ansText: "Emotions, Attitudes aur Values", exp: "Affective domain insaan ke bhavnao, attitude aur ethical values ko cover karta hai." },
+        { q: "7. Pavlov ke 'Classical Conditioning' experiment mein kis animal par study hui thi?", options: ["Dog", "Rat", "Cat", "Pigeon"], ansText: "Dog", exp: "Ivan Pavlov ne dog aur bell ke saath conditioning experiment kiya tha." },
+        { q: "8. B.F. Skinner ne kis learning theory ka vikas kiya tha?", options: ["Operant Conditioning", "Classical Conditioning", "Insight Learning", "Social Learning"], ansText: "Operant Conditioning", exp: "Skinner ne Operant Conditioning (Reinforcement Theory) di thi." },
+        { q: "9. Positive Reinforcement ka learning par kya effect hota hai?", options: ["Desirable behavior repeat hone ki probability badhti hai", "Behavior stop ho jata hai", "Fear paida hota hai", "Memory loss hota hai"], ansText: "Desirable behavior repeat hone ki probability badhti hai", exp: "Reward ya praise se desired action bar-bar dohrane ka incentive milta hai." },
+        { q: "10. Memory ke 3 main stages ka sahi kram kya hai?", options: ["Encoding -> Storage -> Retrieval", "Storage -> Encoding -> Retrieval", "Retrieval -> Storage -> Encoding", "Encoding -> Retrieval -> Storage"], ansText: "Encoding -> Storage -> Retrieval", exp: "Pehle brain information encode karta hai, fir store karta hai, aur zaroorat padne par retrieve karta hai." },
+        { q: "11. 'Forgetting Curve' ka concept kis psychologist ne diya tha?", options: ["Hermann Ebbinghaus", "Bloom", "Thorndike", "Pavlov"], ansText: "Hermann Ebbinghaus", exp: "Ebbinghaus ne bataya tha ki samay ke sath bina revision ke information fast fade hoti hai." },
+        { q: "12. Maslow's Hierarchy of Needs mein sabse basic/lower level need kaun si hai?", options: ["Physiological Needs (Roti, kapda, makan, rest)", "Safety Needs", "Self-Actualization", "Social Needs"], ansText: "Physiological Needs (Roti, kapda, makan, rest)", exp: "Insaan ki sabse buniyadi zarurat Physiological needs hoti hai." },
+        { q: "13. Maslow's Pyramid ka sabse highest level kaun sa hai?", options: ["Self-Actualization", "Esteem Needs", "Safety Needs", "Social Needs"], ansText: "Self-Actualization", exp: "Self-Actualization ka matlab apne highest potential ko achieve karna hota hai." },
+        { q: "14. Motivation do tarah ki hoti hai: Intrinsic aur Extrinsic. Intrinsic motivation ka udaharan kya hai?", options: ["Inner satisfaction aur interest se sikhna", "Prize ke liye sikhna", "Punishment ke darr se sikhna", "Marks ke liye sikhna"], ansText: "Inner satisfaction aur interest se sikhna", exp: "Intrinsic motivation andar ki ichha aur aatmasantushti se aati hai." },
+        { q: "15. Extrinsic Motivation ka udaharan kya hai?", options: ["Reward, Cash prize ya Certificate paane ke liye kaam karna", "Personal joy", "Internal satisfaction", "Curiosity"], ansText: "Reward, Cash prize ya Certificate paane ke liye kaam karna", exp: "Extrinsic motivation bahari incentives par nirbhar karti hai." },
+        { q: "16. Transfer of Training ka kya matlab hai?", options: ["Ek situation mein sikhi skill ko doosri situation mein apply karna", "College transfer hona", "Job switch karna", "Notes copy karna"], ansText: "Ek situation mein sikhi skill ko doosri situation mein apply karna", exp: "Sikhe hue gyan ko nayi condition mein upyog karna Transfer of Learning hai." },
+        { q: "17. Negative Transfer of Training kab hota hai?", options: ["Jab purani habit nayi learning mein rukavat bane", "Jab learning fast ho jaye", "Jab zero effect ho", "Jab full marks aayein"], ansText: "Jab purani habit nayi learning mein rukavat bane", exp: "Jaise Right-hand drive car chalane wale ko Left-hand drive car chalane mein dikkat aana." },
+        { q: "18. Adult Learning Principles ko kya kaha jata hai?", options: ["Andragogy", "Pedagogy", "Psychology", "Demography"], ansText: "Andragogy", exp: "Adults ko sikhane ke vigyan ko Andragogy kehte hain (Knowles dwara given)." },
+        { q: "19. Pedagogy aur Andragogy mein mukhya antar kya hai?", options: ["Pedagogy child-centered hoti hai, Andragogy adult/self-directed hoti hai", "Pedagogy adult ke liye hai", "Dono same hain", "Dono non-technical hain"], ansText: "Pedagogy child-centered hoti hai, Andragogy adult/self-directed hoti hai", exp: "Pedagogy mein teacher centered approach hota hai jabki Andragogy self-directed hoti hai." },
+        { q: "20. Sensory Memory ka duration kitna hota hai?", options: ["Less than 1-2 seconds", "24 hours", "1 week", "Permanent"], ansText: "Less than 1-2 seconds", exp: "Sensory memory seconds ke fraction ke liye sensation retain karti hai." },
+        { q: "21. Short-Term Memory (STM) ki capacity kitni hoti hai?", options: ["7 ± 2 items (Miller's Magic Number)", "Unlimited", "100 items", "Only 1 item"], ansText: "7 ± 2 items (Miller's Magic Number)", exp: "Miller ke anusar human brain ek baar mein STM mein 5-9 chunks store karta hai." },
+        { q: "22. Stimulus-Response (S-R) Bond ki strength badhane ke liye kya zaroori hai?", options: ["Practice aur Immediate Feedback", "Long gap", "Delay in test", "No practice"], ansText: "Practice aur Immediate Feedback", exp: "Immediate feedback aur repetition se S-R connection strong hota hai." },
+        { q: "23. Gestalt Theory ka main emphasis kis par hai?", options: ["Learning as a Whole (Whole is greater than sum of parts)", "Rote learning", "Step by step memorization", "Trial and error only"], ansText: "Learning as a Whole (Whole is greater than sum of parts)", exp: "Gestalt theory 'Perception of Whole' aur Insight learning par focus karti hai." },
+        { q: "24. Kohler ke Chimpanzee experiment se kaun sa learning concept aaya?", options: ["Insight Learning (Aha! Moment)", "Conditioning", "Rote Learning", "Rhythmic learning"], ansText: "Insight Learning (Aha! Moment)", exp: "Sultan naam ke chimpanzee ne problem ko suddenly 'Insight' se solve kiya tha." },
+        { q: "25. Learning curve mein 'Plateau' ka kya matlab hota hai?", options: ["Aisa period jahan learning progress stop/flat lagti hai", "Rapid improvement", "Exam failure", "Memory peak"], ansText: "Aisa period jahan learning progress stop/flat lagti hai", exp: "Learning plateau temporary stagnation phase hota hai." },
+        { q: "26. Individual Differences ke mukhya karak kya hain?", options: ["Heredity aur Environment", "Clothes aur Style", "Weather only", "School distance"], ansText: "Heredity aur Environment", exp: "Aanuvanshikta (Heredity) aur Vatavaran (Environment) individual differences banate hain." },
+        { q: "27. Attention span badhane ke liye instructor ko kya karna chahiye?", options: ["Teaching aids aur active interaction use karna", "Continuous 3-hour lecture dena", "Dark room mein padhana", "Silent reading bolna"], ansText: "Teaching aids aur active interaction use karna", exp: "Media variation aur interaction se trainees ka attention sustain rehta hai." },
+        { q: "28. Habit Formation mein sabse pehla step kya hota hai?", options: ["Cue / Trigger", "Reward", "Routine", "Punishment"], ansText: "Cue / Trigger", exp: "Habit loop: Cue -> Routine -> Reward se banti hai." },
+        { q: "29. Skill Learning kis domain ke antargat aati hai?", options: ["Psychomotor Domain", "Affective Domain", "Cognitive Domain", "Social Domain"], ansText: "Psychomotor Domain", exp: "Hands-on muscular control psychomotor domain hota hai." },
+        { q: "30. Bloom's Taxonomy ke Cognitive Domain ke 6 levels mein sabse basic level kaun sa hai?", options: ["Remembering / Knowledge", "Understanding", "Application", "Analysis"], ansText: "Remembering / Knowledge", exp: "Knowledge/Remembering cognitive pyramid ka foundation level hai." }
     ],
     m3: [
-        { q: "1. ADDIE Model mein 'A' ka kya matlab hota hai?", options: ["A) Analysis", "B) Application", "C) Assessment", "D) Alignment"], ans: 0, exp: "ADDIE ka matlab Analysis, Design, Development, Implementation, Evaluation hai." },
-        { q: "2. ADDIE Model mein 'D' do baar aata hai. Unka sahi sequence kya hai?", options: ["A) Design, then Development", "B) Development, then Design", "C) Evaluation, then Design", "D) Data, then Design"], ans: 0, exp: "Pehle instruction ko Design kiya jata hai, fir instructional material Develop kiya jata hai." },
-        { q: "3. Course Syllabus Analysis ka main purpose kya hai?", options: ["A) Learning Objectives aur Time Allocation ko plan karna", "B) Exam paper sell karna", "C) Book print karna", "D) Student fee decide karna"], ans: 0, exp: "Syllabus analysis se syllabus ko manageable teaching units mein breakup kiya jata hai." },
-        { q: "4. Practical Trade Syllabus ko divide karte samay 'Operation' ka kya matlab hai?", options: ["A) Ek single unit of work jo specific skill require kare", "B) Full job", "C) Factory work", "D) Theory lesson"], ans: 0, exp: "Operation ek fundamental manipulative step hai jo skill perform karne mein lagta hai." },
-        { q: "5. Course breakup banate samay 'Week-wise Distribution' kyun zaroori hai?", options: ["A) Complete syllabus ko time-bound manner mein cover karne ke liye", "B) Holiday plan ke liye", "C) Principal signature ke liye", "D) Attendance ke liye"], ans: 0, exp: "Time management ke tehat har topic ko specific training hours milte hain." },
-        { q: "6. ADDIE Model ke kis phase mein Instructor real classroom mein Lesson deliver karta hai?", options: ["A) Implementation", "B) Analysis", "C) Design", "D) Development"], ans: 0, exp: "Implementation Phase mein actual teaching-learning process execute hoti hai." },
-        { q: "7. ADDIE Model ka final stage kaun sa hai?", options: ["A) Evaluation", "B) Design", "C) Analysis", "D) Implementation"], ans: 0, exp: "Evaluation Phase mein course ki success aur improvement areas check kiye jaate hain." },
-        { q: "8. Bloom's Taxonomy (2001 Revised) ke Cognitive Domain ka TOP level kaun sa hai?", options: ["A) Creating", "B) Evaluating", "C) Analyzing", "D) Applying"], ans: 0, exp: "Revised taxonomy mein 'Creating' highest level of cognitive thinking hai." },
-        { q: "9. Practical Skill breakup mein 'Job' kya hota hai?", options: ["A) Multiple operations ka combination jo ek complete useful product banaye", "B) Single operation", "C) Theory note", "D) Safety rule"], ans: 0, exp: "Job ekaadh operations se milkar bana final practical exercise hota hai." },
-        { q: "10. Teaching Plan ya Time Table banate samay 'Theory' aur 'Practical' ka ratio CTS trades mein aamtaur par kya hota hai?", options: ["A) Approx 30% Theory : 70% Practical", "B) 50:50", "C) 80% Theory : 20% Practical", "D) 100% Theory"], ans: 0, exp: "Vocational training ka main thrust hands-on practical skills (approx 70%) par hota hai." },
-        { q: "11. 'Task Analysis' ka kya matlab hai?", options: ["A) Skill ko Chote-chote sequential steps mein todna", "B) Student ki complaint likhna", "C) Equipment purchase karna", "D) Test paper check karna"], ans: 0, exp: "Task analysis se job ke sabhi elements aur safe steps ki sequencing hoti hai." },
-        { q: "12. Instructional Objective banate samay 'ABCD' rule hota hai. 'A' ka kya matlab hai?", options: ["A) Audience (Learner)", "B) Behavior", "C) Condition", "D) Degree"], ans: 0, exp: "ABCD Rule: Audience, Behavior, Condition, Degree." },
-        { q: "13. ABCD Goal Writing rule mein 'B' ka matlab kya hai?", options: ["A) Behavior (Measurable action verb)", "B) Books", "C) Board", "D) Brain"], ans: 0, exp: "Behavior wo measurable action hai jo trainee perform karke dikhayega." },
-        { q: "14. ABCD Rule mein 'C' kya darshata hai?", options: ["A) Condition (Kis situation/tools ke tehat)", "B) Classroom", "C) Course", "D) Content"], ans: 0, exp: "Condition batati hai ki learning evaluation kin tools ya environment mein hoga." },
-        { q: "15. ABCD Rule mein 'D' ka kya matlab hota hai?", options: ["A) Degree (Acceptable performance standard/accuracy level)", "B) Duration", "C) Diagram", "D) Department"], ans: 0, exp: "Degree batata hai ki accuracy kitni honi chahiye (e.g., ±0.02 mm tolerance)." },
-        { q: "16. Gagne's 9 Events of Instruction mein Pehla Event kaun sa hai?", options: ["A) Gaining Attention", "B) Informing Objectives", "C) Presenting Content", "D) Providing Feedback"], ans: 0, exp: "Pehla kaam trainees ka dhyan topic par laana (Gaining Attention) hai." },
-        { q: "17. Syllabus analysis mein 'Must Know' content ka kya percentage priority honi chahiye?", options: ["A) Sabse highest priority (Essential for job/safety)", "B) Optional", "C) Lowest priority", "D) Ignore karna chahiye"], ans: 0, exp: "Content 3 type ka hota hai: Must Know, Should Know, Could Know. Must Know 100% zaroori hai." },
-        { q: "18. 'Should Know' content kya cover karta hai?", options: ["A) Background information jo efficiency aur understanding badhaye", "B) Essential safety only", "C) Unrelated history", "D) Complex research"], ans: 0, exp: "Should know content trainee ke knowledge base ko enhance karta hai." },
-        { q: "19. 'Could Know' content ka nature kya hota hai?", options: ["A) Desirable/Extra information agar time bache", "B) Mandatory for pass", "C) Safety critical", "D) Daily routine"], ans: 0, exp: "Could know extra or advanced knowledge hoti hai jo optional rakhi ja sakti hai." },
-        { q: "20. Lesson Plan banate samay 'Time Management' plan kahan likha jata hai?", options: ["A) Har teaching stage/step ke samne minutes mein", "B) Title ke sath only", "C) End mein", "D) Record book mein"], ans: 0, exp: "Har step ka exact time planned hota hai." },
-        { q: "21. Macro Lesson Plan aur Micro Lesson Plan mein kya antar hai?", options: ["A) Macro full duration lesson hai, Micro short duration focused skill lesson hai", "B) Macro simple hai", "C) Dono same hain", "D) Micro syllabus hai"], ans: 0, exp: "Micro plan 5-10 min ki targeted skill practice ke liye hota hai." },
-        { q: "22. Course Curriculum design karte samay Industry Needs Survey kyun karwaya jata hai?", options: ["A) Market-relevant employability skills identify karne ke liye", "B) Fee structure ke liye", "C) Building plan ke liye", "D) Exam seat count ke liye"], ans: 0, exp: "Curriculum hamesha industry requirement se aligned hona chahiye." },
-        { q: "23. Curriculum aur Syllabus mein kya fark hai?", options: ["A) Curriculum broad total training program hai, Syllabus topics ki list hai", "B) Syllabus bada hota hai", "C) Dono identical hain", "D) Curriculum exam paper hai"], ans: 0, exp: "Curriculum overall learning experience cover karta hai, jabki syllabus specific content unit hota hai." },
-        { q: "24. Practical Skill Training Chart (Progress Chart) mein vertical axis par kya likha hota hai?", options: ["A) Trainees ke Naam/Roll No.", "B) Operations/Jobs", "C) Dates", "D) Attendance"], ans: 0, exp: "Progress chart par ek taraf trainees ke naam aur doosri taraf skill jobs list hoti hain." },
-        { q: "25. Training Program ke 'Evaluation' phase mein 'Summative Evaluation' kab hota hai?", options: ["A) Course/Module ke end mein final decision ke liye", "B) Har minute mein", "C) Class shuru hone se pehle", "D) Admission time par"], ans: 0, exp: "Summative evaluation course completion par overall performance check karne ke liye hota hai." },
-        { q: "26. Formative Evaluation ka main purpose kya hai?", options: ["A) Ongoing teaching-learning mein immediate improvement karna", "B) Certificate issue karna", "C) Rank announce karna", "D) Penalty lagana"], ans: 0, exp: "Formative evaluation course ke dauran continuous diagnostic feedback deta hai." },
-        { q: "27. Lesson Plan ka 'Motivation' part kisme shamil hota hai?", options: ["A) Introduction stage mein", "B) Presentation mein", "C) Application mein", "D) Summary mein"], ans: 0, exp: "Introduction stage mein trainees ke attention aur motivation ko arouse kiya jata hai." },
-        { q: "28. Instructional Design mein 'Target Audience Analysis' mein kya check kiya jata hai?", options: ["A) Trainees ka prior knowledge, age aur education background", "B) Fee receipt", "C) Personal address", "D) Blood group"], ans: 0, exp: "Target audience analysis se humein trainees ke entry-level behavior ka pata chalta hai." },
-        { q: "29. Syllabus Analysis ka sabse pehla step kya hai?", options: ["A) Course outcomes aur objectives ko read aur breakdown karna", "B) Equipment purchase karna", "C) Answer key banana", "D) Class test lena"], ans: 0, exp: "Objectives aur outcomes ko samajhkar content modularize karna pehla step hai." },
-        { q: "30. 'Psychomotor Domain' ke taxonomy levels kisne propose kiye the?", options: ["A) R.H. Dave / Simpson / Harrow", "B) Benjamin Bloom", "C) Krathwohl", "D) Skinner"], ans: 0, exp: "Dave, Simpson aur Harrow ne psychomotor levels diye hain." }
+        { q: "1. ADDIE Model mein 'A' ka kya matlab hota hai?", options: ["Analysis", "Application", "Assessment", "Alignment"], ansText: "Analysis", exp: "ADDIE ka matlab Analysis, Design, Development, Implementation, Evaluation hai." },
+        { q: "2. ADDIE Model mein 'D' do baar aata hai. Unka sahi sequence kya hai?", options: ["Design, then Development", "Development, then Design", "Evaluation, then Design", "Data, then Design"], ansText: "Design, then Development", exp: "Pehle instruction ko Design kiya jata hai, fir instructional material Develop kiya jata hai." },
+        { q: "3. Course Syllabus Analysis ka main purpose kya hai?", options: ["Learning Objectives aur Time Allocation ko plan karna", "Exam paper sell karna", "Book print karna", "Student fee decide karna"], ansText: "Learning Objectives aur Time Allocation ko plan karna", exp: "Syllabus analysis se syllabus ko manageable teaching units mein breakup kiya jata hai." },
+        { q: "4. Practical Trade Syllabus ko divide karte samay 'Operation' ka kya matlab hai?", options: ["Ek single unit of work jo specific skill require kare", "Full job", "Factory work", "Theory lesson"], ansText: "Ek single unit of work jo specific skill require kare", exp: "Operation ek fundamental manipulative step hai jo skill perform karne mein lagta hai." },
+        { q: "5. Course breakup banate samay 'Week-wise Distribution' kyun zaroori hai?", options: ["Complete syllabus ko time-bound manner mein cover karne ke liye", "Holiday plan ke liye", "Principal signature ke liye", "Attendance ke liye"], ansText: "Complete syllabus ko time-bound manner mein cover karne ke liye", exp: "Time management ke tehat har topic ko specific training hours milte hain." },
+        { q: "6. ADDIE Model ke kis phase mein Instructor real classroom mein Lesson deliver karta hai?", options: ["Implementation", "Analysis", "Design", "Development"], ansText: "Implementation", exp: "Implementation Phase mein actual teaching-learning process execute hoti hai." },
+        { q: "7. ADDIE Model ka final stage kaun sa hai?", options: ["Evaluation", "Design", "Analysis", "Implementation"], ansText: "Evaluation", exp: "Evaluation Phase mein course ki success aur improvement areas check kiye jaate hain." },
+        { q: "8. Bloom's Taxonomy (2001 Revised) ke Cognitive Domain ka TOP level kaun sa hai?", options: ["Creating", "Evaluating", "Analyzing", "Applying"], ansText: "Creating", exp: "Revised taxonomy mein 'Creating' highest level of cognitive thinking hai." },
+        { q: "9. Practical Skill breakup mein 'Job' kya hota hai?", options: ["Multiple operations ka combination jo ek complete useful product banaye", "Single operation", "Theory note", "Safety rule"], ansText: "Multiple operations ka combination jo ek complete useful product banaye", exp: "Job ekaadh operations se milkar bana final practical exercise hota hai." },
+        { q: "10. Teaching Plan ya Time Table banate samay 'Theory' aur 'Practical' ka ratio CTS trades mein aamtaur par kya hota hai?", options: ["Approx 30% Theory : 70% Practical", "50:50", "80% Theory : 20% Practical", "100% Theory"], ansText: "Approx 30% Theory : 70% Practical", exp: "Vocational training ka main thrust hands-on practical skills (approx 70%) par hota hai." },
+        { q: "11. 'Task Analysis' ka kya matlab hai?", options: ["Skill ko Chote-chote sequential steps mein todna", "Student ki complaint likhna", "Equipment purchase karna", "Test paper check karna"], ansText: "Skill ko Chote-chote sequential steps mein todna", exp: "Task analysis se job ke sabhi elements aur safe steps ki sequencing hoti hai." },
+        { q: "12. Instructional Objective banate samay 'ABCD' rule hota hai. 'A' ka kya matlab hai?", options: ["Audience (Learner)", "Behavior", "Condition", "Degree"], ansText: "Audience (Learner)", exp: "ABCD Rule: Audience, Behavior, Condition, Degree." },
+        { q: "13. ABCD Goal Writing rule mein 'B' ka matlab kya hai?", options: ["Behavior (Measurable action verb)", "Books", "Board", "Brain"], ansText: "Behavior (Measurable action verb)", exp: "Behavior wo measurable action hai jo trainee perform karke dikhayega." },
+        { q: "14. ABCD Rule mein 'C' kya darshata hai?", options: ["Condition (Kis situation/tools ke tehat)", "Classroom", "Course", "Content"], ansText: "Condition (Kis situation/tools ke tehat)", exp: "Condition batati hai ki learning evaluation kin tools ya environment mein hoga." },
+        { q: "15. ABCD Rule mein 'D' ka kya matlab hota hai?", options: ["Degree (Acceptable performance standard/accuracy level)", "Duration", "Diagram", "Department"], ansText: "Degree (Acceptable performance standard/accuracy level)", exp: "Degree batata hai ki accuracy kitni honi chahiye (e.g., ±0.02 mm tolerance)." },
+        { q: "16. Gagne's 9 Events of Instruction mein Pehla Event kaun sa hai?", options: ["Gaining Attention", "Informing Objectives", "Presenting Content", "Providing Feedback"], ansText: "Gaining Attention", exp: "Pehla kaam trainees ka dhyan topic par laana (Gaining Attention) hai." },
+        { q: "17. Syllabus analysis mein 'Must Know' content ka kya percentage priority honi chahiye?", options: ["Sabse highest priority (Essential for job/safety)", "Optional", "Lowest priority", "Ignore karna chahiye"], ansText: "Sabse highest priority (Essential for job/safety)", exp: "Content 3 type ka hota hai: Must Know, Should Know, Could Know. Must Know 100% zaroori hai." },
+        { q: "18. 'Should Know' content kya cover karta hai?", options: ["Background information jo efficiency aur understanding badhaye", "Essential safety only", "Unrelated history", "Complex research"], ansText: "Background information jo efficiency aur understanding badhaye", exp: "Should know content trainee ke knowledge base ko enhance karta hai." },
+        { q: "19. 'Could Know' content ka nature kya hota hai?", options: ["Desirable/Extra information agar time bache", "Mandatory for pass", "Safety critical", "Daily routine"], ansText: "Desirable/Extra information agar time bache", exp: "Could know extra or advanced knowledge hoti hai jo optional rakhi ja sakti hai." },
+        { q: "20. Lesson Plan banate samay 'Time Management' plan kahan likha jata hai?", options: ["Har teaching stage/step ke samne minutes mein", "Title ke sath only", "End mein", "Record book mein"], ansText: "Har teaching stage/step ke samne minutes mein", exp: "Har step ka exact time planned hota hai." },
+        { q: "21. Macro Lesson Plan aur Micro Lesson Plan mein kya antar hai?", options: ["Macro full duration lesson hai, Micro short duration focused skill lesson hai", "Macro simple hai", "Dono same hain", "Micro syllabus hai"], ansText: "Macro full duration lesson hai, Micro short duration focused skill lesson hai", exp: "Micro plan 5-10 min ki targeted skill practice ke liye hota hai." },
+        { q: "22. Course Curriculum design karte samay Industry Needs Survey kyun karwaya jata hai?", options: ["Market-relevant employability skills identify karne ke liye", "Fee structure ke liye", "Building plan ke liye", "Exam seat count ke liye"], ansText: "Market-relevant employability skills identify karne ke liye", exp: "Curriculum hamesha industry requirement se aligned hona chahiye." },
+        { q: "23. Curriculum aur Syllabus mein kya fark hai?", options: ["Curriculum broad total training program hai, Syllabus topics ki list hai", "Syllabus bada hota hai", "Dono identical hain", "Curriculum exam paper hai"], ansText: "Curriculum broad total training program hai, Syllabus topics ki list hai", exp: "Curriculum overall learning experience cover karta hai, jabki syllabus specific content unit hota hai." },
+        { q: "24. Practical Skill Training Chart (Progress Chart) mein vertical axis par kya likha hota hai?", options: ["Trainees ke Naam/Roll No.", "Operations/Jobs", "Dates", "Attendance"], ansText: "Trainees ke Naam/Roll No.", exp: "Progress chart par ek taraf trainees ke naam aur doosri taraf skill jobs list hoti hain." },
+        { q: "25. Training Program ke 'Evaluation' phase mein 'Summative Evaluation' kab hota hai?", options: ["Course/Module ke end mein final decision ke liye", "Har minute mein", "Class shuru hone se pehle", "Admission time par"], ansText: "Course/Module ke end mein final decision ke liye", exp: "Summative evaluation course completion par overall performance check karne ke liye hota hai." },
+        { q: "26. Formative Evaluation ka main purpose kya hai?", options: ["Ongoing teaching-learning mein immediate improvement karna", "Certificate issue karna", "Rank announce karna", "Penalty lagana"], ansText: "Ongoing teaching-learning mein immediate improvement karna", exp: "Formative evaluation course ke dauran continuous diagnostic feedback deta hai." },
+        { q: "27. Lesson Plan ka 'Motivation' part kisme shamil hota hai?", options: ["Introduction stage mein", "Presentation mein", "Application mein", "Summary mein"], ansText: "Introduction stage mein", exp: "Introduction stage mein trainees ke attention aur motivation ko arouse kiya jata hai." },
+        { q: "28. Instructional Design mein 'Target Audience Analysis' mein kya check kiya jata hai?", options: ["Trainees ka prior knowledge, age aur education background", "Fee receipt", "Personal address", "Blood group"], ansText: "Trainees ka prior knowledge, age aur education background", exp: "Target audience analysis se humein trainees ke entry-level behavior ka pata chalta hai." },
+        { q: "29. Syllabus Analysis ka sabse pehla step kya hai?", options: ["Course outcomes aur objectives ko read aur breakdown karna", "Equipment purchase karna", "Answer key banana", "Class test lena"], ansText: "Course outcomes aur objectives ko read aur breakdown karna", exp: "Objectives aur outcomes ko samajhkar content modularize karna pehla step hai." },
+        { q: "30. 'Psychomotor Domain' ke taxonomy levels kisne propose kiye the?", options: ["R.H. Dave / Simpson / Harrow", "Benjamin Bloom", "Krathwohl", "Skinner"], ansText: "R.H. Dave / Simpson / Harrow", exp: "Dave, Simpson aur Harrow ne psychomotor levels diye hain." }
     ]
 };
 
-let userScore = 0; let totalAttempted = 0; let currentQuestions = [];
+let currentQuestions = [];
+let currentIndex = 0;
+let userAnswers = {};
+
 function unlockApp() {
     const val = document.getElementById('pass-input').value.trim();
     if (val === "UTKARSH@2559") {
@@ -166,45 +199,138 @@ function unlockApp() {
         document.getElementById('lock-screen').style.display = "none";
         document.getElementById('main-hub').style.display = "block";
         startSelectedQuiz();
-    } else { document.getElementById('lock-msg').innerText = "Incorrect Password!"; }
+    } else { 
+        document.getElementById('lock-msg').innerText = "Incorrect Password!"; 
+    }
 }
+
 function lockApp() { sessionStorage.removeItem("pot_auth"); location.reload(); }
+
 if (sessionStorage.getItem("pot_auth") === "true") {
     document.getElementById('lock-screen').style.display = "none";
     document.getElementById('main-hub').style.display = "block";
     window.onload = startSelectedQuiz;
 }
+
 function startSelectedQuiz() {
     const mod = document.getElementById('module-select').value;
-    const container = document.getElementById('quiz-container');
-    const scoreCard = document.getElementById('score-card');
-    userScore = 0; totalAttempted = 0; scoreCard.style.display = "block"; updateScoreUI(0, 0); container.innerHTML = "";
+    document.getElementById('score-card').style.display = "none";
+    document.getElementById('quiz-wrapper').style.display = "block";
+    
+    currentIndex = 0;
+    userAnswers = {};
+
+    let rawQuestions = [];
     if (mod === "master") {
-        currentQuestions = []; Object.keys(potDatabase).forEach(k => currentQuestions.push(...potDatabase[k]));
-        currentQuestions = currentQuestions.sort(() => Math.random() - 0.5);
-    } else { currentQuestions = [...(potDatabase[mod] || [])]; }
-    if (currentQuestions.length === 0) { container.innerHTML = "<p style='text-align:center; padding: 20px;'>Is Module ke questions update ho rahe hain...</p>"; return; }
-    currentQuestions.forEach((qData, qIdx) => {
-        const card = document.createElement('div'); card.className = "card";
-        let optsHTML = ""; qData.options.forEach((opt, oIdx) => { optsHTML += `<button class="option-btn" onclick="checkAns(this, ${qIdx}, ${oIdx}, ${qData.ans})">${opt}</button>`; });
-        card.innerHTML = `<div class="q-title">${qData.q}</div><div class="options-grid" id="opt-group-${qIdx}">${optsHTML}</div><div class="explanation-box" id="exp-${qIdx}"><strong>📌 NIMI Concept:</strong> ${qData.exp}</div>`;
-        container.appendChild(card);
+        Object.keys(potDatabase).forEach(k => rawQuestions.push(...potDatabase[k]));
+        rawQuestions = rawQuestions.sort(() => Math.random() - 0.5);
+    } else { 
+        rawQuestions = JSON.parse(JSON.stringify(potDatabase[mod] || [])); 
+    }
+
+    // Shuffle options dynamically for each question
+    currentQuestions = rawQuestions.map(q => {
+        let shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
+        return {
+            q: q.q,
+            options: shuffledOpts,
+            ansText: q.ansText,
+            exp: q.exp
+        };
     });
+
+    if (currentQuestions.length === 0) { 
+        document.getElementById('quiz-container').innerHTML = "<p style='text-align:center; padding: 20px;'>Is Module ke questions update ho rahe hain...</p>"; 
+        document.getElementById('nav-buttons').style.display = "none";
+        document.getElementById('q-counter').innerText = "";
+        return; 
+    }
+
+    document.getElementById('nav-buttons').style.display = "flex";
+    renderQuestion();
 }
-function checkAns(btn, qIdx, selectedOpt, correctOpt) {
-    const parent = document.getElementById(`opt-group-${qIdx}`);
-    const buttons = parent.getElementsByClassName('option-btn');
-    const expBox = document.getElementById(`exp-${qIdx}`);
-    for (let b of buttons) { b.disabled = true; }
-    totalAttempted++;
-    if (selectedOpt === correctOpt) { btn.classList.add('correct'); userScore++; }
-    else { btn.classList.add('incorrect'); buttons[correctOpt].classList.add('correct'); }
-    expBox.style.display = "block"; updateScoreUI(userScore, currentQuestions.length);
+
+function renderQuestion() {
+    const container = document.getElementById('quiz-container');
+    const qData = currentQuestions[currentIndex];
+    const prefixes = ["A) ", "B) ", "C) ", "D) "];
+    
+    document.getElementById('q-counter').innerText = `Question ${currentIndex + 1} of ${currentQuestions.length}`;
+    
+    let optsHTML = "";
+    qData.options.forEach((optText, oIdx) => {
+        let extraClass = "";
+        let isSelected = userAnswers[currentIndex] !== undefined;
+        
+        if (isSelected) {
+            if (optText === qData.ansText) extraClass = "correct";
+            else if (userAnswers[currentIndex] === optText) extraClass = "incorrect";
+        }
+
+        optsHTML += `<button class="option-btn ${extraClass}" ${isSelected ? 'disabled' : ''} onclick="selectAnswer('${optText.replace(/'/g, "\\'")}')">${prefixes[oIdx]}${optText}</button>`;
+    });
+
+    const isAnswered = userAnswers[currentIndex] !== undefined;
+
+    container.innerHTML = `
+        <div class="card">
+            <div class="q-title">${qData.q}</div>
+            <div class="options-grid">${optsHTML}</div>
+            <div class="explanation-box" id="exp-box" style="display: ${isAnswered ? 'block' : 'none'};">
+                <strong>📌 NIMI Concept:</strong> ${qData.exp}
+            </div>
+        </div>
+    `;
+
+    document.getElementById('prev-btn').disabled = currentIndex === 0;
+    const nextBtn = document.getElementById('next-btn');
+    if (currentIndex === currentQuestions.length - 1) {
+        nextBtn.innerText = "Finish & Submit";
+    } else {
+        nextBtn.innerText = "Next →";
+    }
 }
-function updateScoreUI(score, total) {
-    const percent = total > 0 ? Math.round((score / total) * 100) : 0;
+
+function selectAnswer(selectedOptText) {
+    if (userAnswers[currentIndex] !== undefined) return;
+    
+    userAnswers[currentIndex] = selectedOptText;
+    renderQuestion();
+}
+
+function nextQuestion() {
+    if (currentIndex < currentQuestions.length - 1) {
+        currentIndex++;
+        renderQuestion();
+    } else {
+        finishQuiz();
+    }
+}
+
+function prevQuestion() {
+    if (currentIndex > 0) {
+        currentIndex--;
+        renderQuestion();
+    }
+}
+
+function finishQuiz() {
+    document.getElementById('quiz-wrapper').style.display = "none";
+    const scoreCard = document.getElementById('score-card');
+    
+    let correctCount = 0;
+    currentQuestions.forEach((q, idx) => {
+        if (userAnswers[idx] === q.ansText) {
+            correctCount++;
+        }
+    });
+
+    const total = currentQuestions.length;
+    const percent = total > 0 ? Math.round((correctCount / total) * 100) : 0;
+
     document.getElementById('score-percent').innerText = `${percent}%`;
-    document.getElementById('score-details').innerText = `Correct: ${score} / ${total} Questions`;
+    document.getElementById('score-details').innerText = `Aapne ${total} mein se ${correctCount} questions sahi kiye!`;
+    scoreCard.style.display = "block";
 }
 </script>
 </body>
