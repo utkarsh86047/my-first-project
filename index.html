@@ -3,118 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CITS Trade & Quiz Hub | By Utkarsh Mishra</title>
+    <title>VIP Access | CITS POT Master Hub</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
         body {
-            background-color: #0f172a;
-            color: #f8fafc;
+            background-color: #0b0f19;
+            color: #f3f4f6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             padding: 20px;
         }
 
-        .header {
-            text-align: center;
-            margin-bottom: 20px;
-            width: 100%;
-            max-width: 550px;
-        }
-
-        .header h1 {
-            font-size: 22px;
-            color: #38bdf8;
-            margin-bottom: 6px;
-        }
-
-        .header p {
-            font-size: 13px;
-            color: #94a3b8;
-        }
-
-        .card {
-            background: #1e293b;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        /* --- 1. VIP Lock Screen UI --- */
+        #lockScreen {
+            background: #111827;
+            border: 1px solid rgba(0, 240, 255, 0.3);
             border-radius: 16px;
-            padding: 24px;
+            padding: 35px 25px;
             width: 100%;
-            max-width: 550px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-            margin-bottom: 40px;
+            max-width: 420px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.15);
+            position: relative;
         }
 
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
-            border-bottom: 1px solid #334155;
-            padding-bottom: 10px;
-            overflow-x: auto;
-        }
-
-        .tab-btn {
-            background: transparent;
-            border: none;
-            color: #94a3b8;
-            font-size: 13px;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 8px 12px;
-            border-radius: 8px;
-            white-space: nowrap;
-            transition: all 0.2s;
-        }
-
-        .tab-btn.active {
-            background: #0284c7;
-            color: #ffffff;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        /* Calculator Styles */
-        .calc-group {
+        .lock-icon {
+            font-size: 48px;
             margin-bottom: 15px;
         }
 
-        label {
-            display: block;
-            font-size: 13px;
-            color: #cbd5e1;
+        .lock-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #38bdf8;
+            letter-spacing: 1px;
             margin-bottom: 6px;
-            font-weight: 500;
         }
 
-        input {
+        .lock-subtitle {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-bottom: 25px;
+        }
+
+        .pass-input {
             width: 100%;
-            padding: 10px 14px;
-            background: #0f172a;
-            border: 1px solid #475569;
+            padding: 12px 16px;
+            background: #1f2937;
+            border: 1px solid #374151;
             border-radius: 8px;
-            color: #f8fafc;
-            font-size: 14px;
+            color: #00f0ff;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 3px;
             outline: none;
+            margin-bottom: 15px;
         }
 
-        input:focus {
-            border-color: #38bdf8;
+        .pass-input:focus {
+            border-color: #00f0ff;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
         }
 
-        .btn-calc {
+        .btn-unlock {
             background: linear-gradient(135deg, #0284c7, #06b6d4);
             color: white;
             border: none;
@@ -124,82 +84,178 @@
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            margin-top: 10px;
+            letter-spacing: 1px;
         }
 
-        .result-box {
-            margin-top: 18px;
-            padding: 14px;
-            background: #0f172a;
-            border-radius: 8px;
-            border-left: 4px solid #38bdf8;
-            font-size: 14px;
+        .error-msg {
+            color: #ef4444;
+            font-size: 12px;
+            margin-top: 12px;
             font-weight: 600;
-            color: #38bdf8;
+            display: none;
+        }
+
+        /* --- 2. Main App (Hidden initially) --- */
+        #mainApp {
+            display: none;
+            width: 100%;
+            max-width: 650px;
+        }
+
+        .header {
             text-align: center;
+            margin-bottom: 20px;
         }
 
-        /* Quiz UI Styles */
-        .quiz-container {
-            background: #0f172a;
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid #334155;
+        .header h1 {
+            font-size: 24px;
+            color: #38bdf8;
+            margin-bottom: 4px;
         }
 
-        .question-text {
-            font-size: 15px;
-            font-weight: 600;
-            color: #f8fafc;
-            margin-bottom: 15px;
-            line-height: 1.4;
+        .header p {
+            font-size: 13px;
+            color: #9ca3af;
         }
 
-        .option-btn {
+        .container {
+            background: #111827;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            margin-bottom: 20px;
+        }
+
+        .module-selector {
+            margin-bottom: 20px;
+        }
+
+        label {
             display: block;
+            font-size: 13px;
+            color: #38bdf8;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        select {
             width: 100%;
             padding: 10px 14px;
-            margin-bottom: 8px;
-            background: #1e293b;
-            border: 1px solid #475569;
-            color: #cbd5e1;
+            background: #1f2937;
+            border: 1px solid #374151;
             border-radius: 8px;
-            text-align: left;
-            font-size: 13px;
+            color: white;
+            font-size: 14px;
+            outline: none;
             cursor: pointer;
-            transition: all 0.2s;
         }
 
-        .option-btn:hover {
+        /* Quiz Box UI */
+        .quiz-card {
+            background: #1f2937;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #374151;
+        }
+
+        .question-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #f9fafb;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .options-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .opt-btn {
+            background: #111827;
+            border: 1px solid #374151;
+            color: #e5e7eb;
+            padding: 12px 16px;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .opt-btn:hover {
             border-color: #38bdf8;
             color: #ffffff;
         }
 
-        .option-btn.correct {
+        .opt-btn.correct {
             background: #15803d !important;
             border-color: #22c55e !important;
             color: #ffffff !important;
+            font-weight: bold;
         }
 
-        .option-btn.wrong {
+        .opt-btn.wrong {
             background: #b91c1c !important;
             border-color: #ef4444 !important;
             color: #ffffff !important;
         }
 
-        .score-box {
-            text-align: center;
-            font-size: 16px;
+        /* Deep Explanation & Visual Section */
+        .explanation-box {
+            display: none;
+            margin-top: 20px;
+            padding: 16px;
+            background: #0f172a;
+            border-radius: 10px;
+            border-left: 4px solid #38bdf8;
+        }
+
+        .explanation-title {
+            font-size: 14px;
             font-weight: 700;
             color: #38bdf8;
-            padding: 10px;
+            margin-bottom: 8px;
+        }
+
+        .explanation-text {
+            font-size: 13px;
+            color: #d1d5db;
+            line-height: 1.6;
+            margin-bottom: 12px;
+        }
+
+        .visual-diagram {
+            background: #1e293b;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px dashed #475569;
+            text-align: center;
+            font-size: 12px;
+            color: #a7f3d0;
+        }
+
+        .next-btn {
+            background: linear-gradient(135deg, #0284c7, #06b6d4);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            display: none;
         }
 
         .developer-credit {
             font-size: 12px;
             color: #64748b;
             text-align: center;
-            margin-top: auto;
+            margin-top: 15px;
         }
 
         .developer-credit span {
@@ -210,213 +266,207 @@
 </head>
 <body>
 
-    <div class="header">
-        <h1>⚙️ CITS Trade & Workshop Toolkit</h1>
-        <p>Calculators & Interactive CBT MCQ Quizzes</p>
+    <!-- 1. VIP Lock Screen -->
+    <div id="lockScreen">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-title">RESTRICTED ACCESS</div>
+        <div class="lock-subtitle">CITS NIMI POT Hub | Admin Access Required</div>
+        
+        <input type="password" id="passInput" class="pass-input" placeholder="ENTER ACCESS KEY">
+        <button class="btn-unlock" onclick="unlockApp()">UNLOCK SYSTEM ➔</button>
+        <div class="error-msg" id="errorMsg">⚠️ ACCESS DENIED: Invalid Key! Contact Utkarsh.</div>
+
+        <div class="developer-credit" style="margin-top:20px;">System Architect: <span>Utkarsh Mishra</span></div>
     </div>
 
-    <div class="card">
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab(event, 'quizTab')">📝 POT & CBT Quiz</button>
-            <button class="tab-btn" onclick="switchTab(event, 'turnerTab')">⚙️ Turner Lathe</button>
-            <button class="tab-btn" onclick="switchTab(event, 'electricianTab')">⚡ Electrician (Ohm)</button>
-            <button class="tab-btn" onclick="switchTab(event, 'tempTab')">🌡️ Temp Converter</button>
+    <!-- 2. Main App (Unlocked After Correct Key) -->
+    <div id="mainApp">
+        <div class="header">
+            <h1>📘 CITS NIMI POT Master Hub</h1>
+            <p>Interactive Hinglish Quizzes & Visual Concept Explanations</p>
         </div>
 
-        <!-- 1. Interactive MCQ Quiz Tab -->
-        <div id="quizTab" class="tab-content active">
-            <h3 style="font-size:15px; color:#38bdf8; margin-bottom:12px;">POT (Principles of Teaching) MCQ Quiz</h3>
-            <div class="quiz-container" id="quizBox">
-                <div class="question-text" id="qText">Loading question...</div>
-                <div id="optionsContainer"></div>
-                <div id="feedback" style="margin-top:10px; font-size:13px; font-weight:600; text-align:center;"></div>
+        <div class="container">
+            <div class="module-selector">
+                <label for="moduleSelect">SELECT NIMI POT MODULE:</label>
+                <select id="moduleSelect" onchange="changeModule()">
+                    <option value="0">Module 1: Roles & Traits of Instructor</option>
+                    <option value="1">Module 2: Psychology of Learning & Motivation</option>
+                    <option value="2">Module 3: Syllabus Analysis & ADDIE Model</option>
+                    <option value="3">Module 4: Planning Instruction (Lesson & Demo Plan)</option>
+                    <option value="4">Module 5: Test, Evaluation & Kirkpatrick Model</option>
+                </select>
+            </div>
+
+            <div class="quiz-card" id="quizCard">
+                <div class="question-title" id="qTitle">Loading Question...</div>
+                <div class="options-grid" id="optsContainer"></div>
+
+                <div class="explanation-box" id="explainBox">
+                    <div class="explanation-title">💡 DEEP CONCEPT EXPLANATION (HINGLISH)</div>
+                    <div class="explanation-text" id="explainText"></div>
+                    <div class="visual-diagram" id="visualDiagram"></div>
+                </div>
+
+                <button class="next-btn" id="nextBtn" onclick="nextQuestion()">NEXT QUESTION ➔</button>
             </div>
         </div>
 
-        <!-- 2. Turner Trade Calculator -->
-        <div id="turnerTab" class="tab-content">
-            <h3 style="font-size:15px; color:#38bdf8; margin-bottom:12px;">Taper Turning Angle Calculator</h3>
-            <div class="calc-group">
-                <label>Big Diameter D (mm):</label>
-                <input type="number" id="bigD" placeholder="e.g. 40">
-            </div>
-            <div class="calc-group">
-                <label>Small Diameter d (mm):</label>
-                <input type="number" id="smallD" placeholder="e.g. 30">
-            </div>
-            <div class="calc-group">
-                <label>Length of Taper L (mm):</label>
-                <input type="number" id="taperL" placeholder="e.g. 50">
-            </div>
-            <button class="btn-calc" onclick="calcTaper()">Calculate Angle (tan α)</button>
-            <div class="result-box" id="taperResult">Angle Result will appear here</div>
-        </div>
-
-        <!-- 3. Electrician Trade Calculator -->
-        <div id="electricianTab" class="tab-content">
-            <h3 style="font-size:15px; color:#38bdf8; margin-bottom:12px;">Ohm's Law & Power Calculator</h3>
-            <div class="calc-group">
-                <label>Voltage V (Volts):</label>
-                <input type="number" id="ohmV" placeholder="e.g. 230">
-            </div>
-            <div class="calc-group">
-                <label>Resistance R (Ohms):</label>
-                <input type="number" id="ohmR" placeholder="e.g. 10">
-            </div>
-            <button class="btn-calc" onclick="calcOhm()">Calculate Current & Power</button>
-            <div class="result-box" id="ohmResult">Current (I) & Power (P) Result</div>
-        </div>
-
-        <!-- 4. WCS Temperature Converter -->
-        <div id="tempTab" class="tab-content">
-            <h3 style="font-size:15px; color:#38bdf8; margin-bottom:12px;">Celsius (°C) to Fahrenheit (°F) & Kelvin (K)</h3>
-            <div class="calc-group">
-                <label>Temperature in Celsius (°C):</label>
-                <input type="number" id="tempC" placeholder="e.g. 100">
-            </div>
-            <button class="btn-calc" onclick="calcTemp()">Convert Temperature</button>
-            <div class="result-box" id="tempResult">Conversion Result</div>
-        </div>
+        <div class="developer-credit">Architected by <span>Utkarsh Mishra</span> (ADMIN ACCESS)</div>
     </div>
-
-    <div class="developer-credit">Developed by <span>Utkarsh Mishra</span></div>
 
     <script>
-        function switchTab(evt, tabName) {
-            let contents = document.getElementsByClassName("tab-content");
-            for (let c of contents) c.classList.remove("active");
+        // --- Password Logic ---
+        const SECRET_KEY = "UTKARSH2026";
 
-            let buttons = document.getElementsByClassName("tab-btn");
-            for (let b of buttons) b.classList.remove("active");
+        function unlockApp() {
+            const userKey = document.getElementById('passInput').value;
+            const errorMsg = document.getElementById('errorMsg');
 
-            document.getElementById(tabName).classList.add("active");
-            evt.currentTarget.classList.add("active");
+            if (userKey === SECRET_KEY) {
+                document.getElementById('lockScreen').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+            } else {
+                errorMsg.style.display = 'block';
+                document.getElementById('passInput').value = '';
+            }
         }
 
-        // --- MCQ Quiz Data ---
-        const quizData = [
-            {
-                question: "1. In ADDIE Model, what does the letter 'A' stand for?",
-                options: ["Application", "Analysis", "Assessment", "Evaluation"],
-                correct: 1
-            },
-            {
-                question: "2. Which plan is prepared specifically for Trade Practical teaching in CTI?",
-                options: ["Lesson Plan", "Demonstration Plan", "Syllabus Plan", "Course Outline"],
-                correct: 1
-            },
-            {
-                question: "3. What is the first step in the 4-step teaching method?",
-                options: ["Presentation", "Preparation", "Application", "Testing"],
-                correct: 1
-            },
-            {
-                question: "4. In Ohm's Law (V = I * R), if Voltage increases keeping Resistance constant, what happens to Current?",
-                options: ["Increases", "Decreases", "Remains Same", "Becomes Zero"],
-                correct: 0
-            }
+        // Enter key shortcut for password
+        document.getElementById("passInput").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") unlockApp();
+        });
+
+        // --- Full NIMI POT Question Bank Data ---
+        const nimiData = [
+            // Module 1
+            [
+                {
+                    q: "1. NIMI ke anusar, CTI Practical teaching ke liye Instructor kaun sa plan tayar karta hai?",
+                    opts: ["Lesson Plan", "Demonstration Plan", "Syllabus Plan", "Macro Plan"],
+                    ans: 1,
+                    explain: "CITS/CTI mein Trade Theory padhane ke liye <b>Lesson Plan</b> aur Trade Practical sikhane ke liye <b>Demonstration Plan</b> banaya jata hai. Iska objective trainees ko practical skill live dikhana hota hai.",
+                    diagram: "📋 <b>PRACTICAL WORKSHOP:</b> Instructor Demo Dikhata hai ➔ Trainee Imitate (Copy) Karta hai."
+                },
+                {
+                    q: "2. Vocational Training mein Good Instructor ki sabse main essential trait kya hoti hai?",
+                    opts: ["Subject Knowledge & Skill Competency", "Strictness", "High Qualification", "Speed of Speaking"],
+                    ans: 0,
+                    explain: "Ek achhe Vocational Instructor mein apni trade ki <b>Practical Skill (Mastery)</b> aur <b>Trade Theory Mastery</b> sabse zyada zaruri hoti hai taaki wo correct operational methods sikhaye.",
+                    diagram: "🎯 <b>INSTRUCTOR TRIANGLE:</b> Knowledge + Skill + Attitude = Successful Instructor"
+                }
+            ],
+            // Module 2
+            [
+                {
+                    q: "1. 4-Step Teaching Method ka SABSE PEHLA Step kaun sa hai?",
+                    opts: ["Presentation", "Preparation", "Application", "Testing"],
+                    ans: 1,
+                    explain: "Teaching Process ke 4 steps hote hain: <br>1. <b>Preparation</b> (Students ko mentally ready aur motivate karna)<br>2. <b>Presentation</b> (Lesson padhana)<br>3. <b>Application</b> (Trainee se practice karwana)<br>4. <b>Testing</b> (Evaluation karna).",
+                    diagram: "🔄 <b>4-STEP FLOW:</b> [1. Preparation] ➔ [2. Presentation] ➔ [3. Application] ➔ [4. Testing]"
+                },
+                {
+                    q: "2. John Dewey ke progressive view ke mutabiq Education kya hai?",
+                    opts: ["Preparation for Life", "Life itself", "Just getting a Job", "Passing CBT Exams"],
+                    ans: 1,
+                    explain: "John Dewey ka famous quote hai - <i>'Education is not preparation for life; education is life itself.'</i> Iska matlab sikhna daily life ka practical process hai.",
+                    diagram: "🌱 <b>PROGRESSIVE LEARNING:</b> Learning by Doing ➔ Real Life Experience"
+                }
+            ],
+            // Module 3
+            [
+                {
+                    q: "1. ADDIE Model mein 'A' letter ka kya matlab hota hai?",
+                    opts: ["Application", "Assessment", "Analysis", "Adjustment"],
+                    ans: 2,
+                    explain: "ADDIE Instructional Design Model hai: <br>• <b>A</b> - Analysis (Needs & Learners ko samajhna)<br>• <b>D</b> - Design (Syllabus structure)<br>• <b>D</b> - Development (Content/WIM banana)<br>• <b>I</b> - Implementation (Classroom teaching)<br>• <b>E</b> - Evaluation (Testing).",
+                    diagram: "⚙️ <b>ADDIE PROCESS:</b> Analysis ➔ Design ➔ Development ➔ Implementation ➔ Evaluation"
+                }
+            ],
+            // Module 4
+            [
+                {
+                    q: "1. Written Instructional Material (WIM) mein 'Information Sheet' kiske dwara prepare ki jaati hai?",
+                    opts: ["DGT", "Instructor", "Trainee", "Exam Body"],
+                    ans: 1,
+                    explain: "WIM (Written Instructional Material) mein Instructor khud Information Sheet, Operation Sheet aur Job Sheet tayar karta hai taaki trainees ko reference material mile.",
+                    diagram: "📑 <b>WIM TYPES:</b> Information Sheet (Theory) | Operation Sheet (Practical Steps) | Assignment Sheet"
+                }
+            ],
+            // Module 5
+            [
+                {
+                    q: "1. Kirkpatrick Evaluation Model mein total kitne levels hote hain?",
+                    opts: ["2 Levels", "3 Levels", "4 Levels", "5 Levels"],
+                    ans: 2,
+                    explain: "Kirkpatrick Evaluation Model mein <b>4 Levels</b> hote hain:<br>1. Reaction (Feedback)<br>2. Learning (Knowledge gained)<br>3. Behavior (Job application)<br>4. Results (Organizational impact).",
+                    diagram: "📊 <b>KIRKPATRICK PYRAMID:</b> Level 1: Reaction ➔ Level 2: Learning ➔ Level 3: Behavior ➔ Level 4: Results"
+                }
+            ]
         ];
 
-        let currentQ = 0;
-        let score = 0;
+        let currentMod = 0;
+        let currentQIdx = 0;
+
+        function changeModule() {
+            currentMod = parseInt(document.getElementById('moduleSelect').value);
+            currentQIdx = 0;
+            loadQuestion();
+        }
 
         function loadQuestion() {
-            if (currentQ < quizData.length) {
-                const q = quizData[currentQ];
-                document.getElementById('qText').innerText = q.question;
-                const optContainer = document.getElementById('optionsContainer');
-                optContainer.innerHTML = '';
-                document.getElementById('feedback').innerText = '';
+            const qList = nimiData[currentMod];
+            if (currentQIdx < qList.length) {
+                const item = qList[currentQIdx];
+                document.getElementById('qTitle').innerText = item.q;
+                
+                const optBox = document.getElementById('optsContainer');
+                optBox.innerHTML = '';
 
-                q.options.forEach((opt, idx) => {
+                document.getElementById('explainBox').style.display = 'none';
+                document.getElementById('nextBtn').style.display = 'none';
+
+                item.opts.forEach((opt, idx) => {
                     const btn = document.createElement('button');
-                    btn.className = 'option-btn';
+                    btn.className = 'opt-btn';
                     btn.innerText = opt;
-                    btn.onclick = () => checkAnswer(idx, btn);
-                    optContainer.appendChild(btn);
+                    btn.onclick = () => selectOption(idx, item.ans, item.explain, item.diagram);
+                    optBox.appendChild(btn);
                 });
             } else {
-                document.getElementById('quizBox').innerHTML = `
-                    <div class="score-box">🎉 Quiz Completed!<br>Your Score: ${score} / ${quizData.length}</div>
-                    <button class="btn-calc" onclick="resetQuiz()">Restart Quiz</button>
+                document.getElementById('quizCard').innerHTML = `
+                    <div style="text-align:center; padding:20px;">
+                        <h3 style="color:#38bdf8; margin-bottom:10px;">🎉 Module Completed!</h3>
+                        <p style="font-size:14px; color:#cbd5e1;">Aapne iss module ke saare NIMI questions revision kar liye hain.</p>
+                        <button class="next-btn" style="display:block; margin-top:20px;" onclick="location.reload()">Restart Module</button>
+                    </div>
                 `;
             }
         }
 
-        function checkAnswer(selectedIdx, btnElement) {
-            const correctIdx = quizData[currentQ].correct;
-            const allButtons = document.querySelectorAll('.option-btn');
-            allButtons.forEach(b => b.style.pointerEvents = 'none');
+        function selectOption(selected, correct, explain, diagram) {
+            const buttons = document.querySelectorAll('.opt-btn');
+            buttons.forEach(b => b.style.pointerEvents = 'none');
 
-            if (selectedIdx === correctIdx) {
-                btnElement.classList.add('correct');
-                document.getElementById('feedback').innerHTML = '<span style="color:#22c55e;">✓ Correct Answer!</span>';
-                score++;
+            if (selected === correct) {
+                buttons[selected].classList.add('correct');
             } else {
-                btnElement.classList.add('wrong');
-                allButtons[correctIdx].classList.add('correct');
-                document.getElementById('feedback').innerHTML = '<span style="color:#ef4444;">✗ Wrong Answer!</span>';
+                buttons[selected].classList.add('wrong');
+                buttons[correct].classList.add('correct');
             }
 
-            setTimeout(() => {
-                currentQ++;
-                loadQuestion();
-            }, 1200);
+            document.getElementById('explainText').innerHTML = explain;
+            document.getElementById('visualDiagram').innerHTML = diagram;
+            document.getElementById('explainBox').style.display = 'block';
+            document.getElementById('nextBtn').style.display = 'block';
         }
 
-        function resetQuiz() {
-            currentQ = 0;
-            score = 0;
-            document.getElementById('quizBox').innerHTML = `
-                <div class="question-text" id="qText"></div>
-                <div id="optionsContainer"></div>
-                <div id="feedback" style="margin-top:10px; font-size:13px; font-weight:600; text-align:center;"></div>
-            `;
+        function nextQuestion() {
+            currentQIdx++;
             loadQuestion();
         }
 
         loadQuestion();
-
-        // Calculators
-        function calcTaper() {
-            let D = parseFloat(document.getElementById('bigD').value);
-            let d = parseFloat(document.getElementById('smallD').value);
-            let L = parseFloat(document.getElementById('taperL').value);
-
-            if (D && d && L && D > d) {
-                let tanAlpha = (D - d) / (2 * L);
-                let angleRad = Math.atan(tanAlpha);
-                let angleDeg = angleRad * (180 / Math.PI);
-                document.getElementById('taperResult').innerHTML = `tan α = ${tanAlpha.toFixed(4)} <br> Compound Rest Angle = ${angleDeg.toFixed(2)}°`;
-            } else {
-                document.getElementById('taperResult').innerText = "Please enter valid D, d and L values (D > d).";
-            }
-        }
-
-        function calcOhm() {
-            let V = parseFloat(document.getElementById('ohmV').value);
-            let R = parseFloat(document.getElementById('ohmR').value);
-
-            if (V && R && R > 0) {
-                let I = V / R;
-                let P = V * I;
-                document.getElementById('ohmResult').innerHTML = `Current (I) = ${I.toFixed(2)} A <br> Power (P) = ${P.toFixed(2)} Watts`;
-            } else {
-                document.getElementById('ohmResult').innerText = "Please enter valid Voltage and Resistance values.";
-            }
-        }
-
-        function calcTemp() {
-            let C = parseFloat(document.getElementById('tempC').value);
-
-            if (!isNaN(C)) {
-                let F = (C * 9 / 5) + 32;
-                let K = C + 273.15;
-                document.getElementById('tempResult').innerHTML = `${F.toFixed(2)} °F | ${K.toFixed(2)} K`;
-            } else {
-                document.getElementById('tempResult').innerText = "Please enter a valid Celsius value.";
-            }
-        }
     </script>
 </body>
 </html>
