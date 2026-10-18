@@ -1,1 +1,299 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CITS All-POT Master Hub | Utkarsh Mishra</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --success-color: #22c55e;
+            --error-color: #ef4444;
+            --text-color: #f8fafc;
+            --text-sub: #94a3b8;
+        }
 
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        body { background-color: var(--bg-color); color: var(--text-color); display: flex; justify-content: center; min-height: 100vh; padding: 15px; }
+        .container { width: 100%; max-width: 800px; margin: 0 auto; }
+
+        /* Lock Screen */
+        #lock-screen {
+            background: var(--card-bg); padding: 30px; border-radius: 16px; text-align: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); margin-top: 50px;
+        }
+        input[type="password"] {
+            width: 100%; padding: 12px; margin: 15px 0; border-radius: 8px;
+            border: 1px solid #334155; background: #0f172a; color: #fff; text-align: center; font-size: 16px;
+        }
+        button {
+            background: var(--accent-color); color: #0f172a; border: none; padding: 12px 24px;
+            font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; width: 100%; transition: 0.2s;
+        }
+        button:hover { opacity: 0.9; }
+
+        /* Main Hub */
+        #main-hub { display: none; }
+        header {
+            background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 20px;
+            border-bottom: 3px solid var(--accent-color); display: flex; justify-content: space-between; align-items: center;
+        }
+        .controls {
+            background: var(--card-bg); padding: 15px; border-radius: 12px; margin-bottom: 20px;
+            display: flex; gap: 10px; flex-wrap: wrap;
+        }
+        select {
+            flex: 1; padding: 10px; border-radius: 6px; background: #0f172a; color: #fff; border: 1px solid #334155; min-width: 200px;
+        }
+
+        .card { background: var(--card-bg); padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .q-title { font-size: 16px; font-weight: 600; margin-bottom: 15px; }
+        .options-grid { display: flex; flex-direction: column; gap: 10px; }
+        .option-btn {
+            background: #0f172a; color: var(--text-color); text-align: left; padding: 12px; border-radius: 6px;
+            border: 1px solid #334155; cursor: pointer;
+        }
+        .option-btn.correct { background: var(--success-color) !important; color: #fff !important; }
+        .option-btn.incorrect { background: var(--error-color) !important; color: #fff !important; }
+        
+        .explanation-box {
+            display: none; margin-top: 15px; padding: 15px; background: rgba(56, 189, 248, 0.1);
+            border-left: 4px solid var(--accent-color); border-radius: 4px; font-size: 14px;
+        }
+
+        /* Percentage Score Banner */
+        .score-card {
+            background: var(--card-bg); padding: 20px; border-radius: 12px; text-align: center;
+            margin-bottom: 20px; border: 2px solid var(--accent-color); display: none;
+        }
+        .score-num { font-size: 32px; font-weight: bold; color: var(--accent-color); margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- 1. Lock Screen -->
+    <div id="lock-screen">
+        <h2>CITS POT Master Hub</h2>
+        <p style="color: var(--text-sub); margin-top: 5px;">Enter Access Password</p>
+        <input type="password" id="pass-input" placeholder="Password daalo">
+        <button onclick="unlockApp()">Unlock Access</button>
+        <p id="lock-msg" style="color: var(--error-color); margin-top: 10px;"></p>
+    </div>
+
+    <!-- 2. Main Hub UI -->
+    <div id="main-hub">
+        <header>
+            <div>
+                <h3 style="color: var(--accent-color);">NIMI POT All-In-One Hub</h3>
+                <span style="font-size: 12px; color: var(--text-sub);">Developer: Utkarsh Mishra</span>
+            </div>
+            <button onclick="lockApp()" style="width: auto; padding: 6px 12px; font-size: 12px;">Lock</button>
+        </header>
+
+        <div class="controls">
+            <select id="module-select" onchange="startSelectedQuiz()">
+                <option value="m1">Module 1: Roles & Responsibilities of Instructor</option>
+                <option value="m2">Module 2: Psychology of Learning</option>
+                <option value="m3">Module 3: Syllabus Analysis & ADDIE Model</option>
+              <option value="m4">Module 4: Planning for Instruction & Demo Plan</option>
+               <option value="m5">Module 5: Instructional Technology & Media</option>
+                <option value="m6">Module 6: Written Instructional Material (WIM)</option>
+                <option value="master">🔥 All-POT Master Test (Randomized)</option>
+            </select>
+            <button onclick="startSelectedQuiz()" style="width: auto;">Start Test</button>
+        </div>
+
+        <div id="score-card" class="score-card">
+            <h3>Test Progress Summary</h3>
+            <div id="score-percent" class="score-num">0%</div>
+            <p id="score-details"></p>
+        </div>
+
+        <div id="quiz-container"></div>
+    </div>
+</div>
+
+<script>
+// NIMI POT Question Bank
+const potDatabase = {
+    m1: [
+        {
+            q: "1. Vocational Training System mein Craftsmen Training Scheme (CTS) ka main objective kya hai?",
+            options: ["A) Academic research", "B) Skilled workforce (kaarigar) taiyar karna", "C) Sirf theory sikhana", "D) Office admin job"],
+            ans: 1,
+            exp: "CTS ka mukhya uddeshya industry ke liye skilled craftsmen ko practical level par taiyar karna hai."
+        },
+        {
+            q: "2. CITS (Craft Instructor Training Scheme) ka mukhya maksad kya hai?",
+            options: ["A) ITI Instructors ko Teaching Skills (Pedagogy) dena", "B) School teaching degree", "C) Direct B.Tech degree", "D) Non-technical diploma"],
+            ans: 0,
+            exp: "CITS instructors ko yeh sikhata hai ki apni trade knowledge ko trainees tak effectively kaise transfer karein."
+        }
+    ],
+    m2: [
+        {
+            q: "1. Thorndike ke 'Law of Effect' ke mutabiq learning par kya prabhav padta hai?",
+            options: ["A) Satisfying result milne par learning strong hoti hai", "B) Punishment se hamesha speed badhti hai", "C) Practice zaroori nahi hai", "D) Memory weak ho jati hai"],
+            ans: 0,
+            exp: "Law of Effect kehta hai ki jab kisi action ka result positive hota hai, toh learner us action ko bar-bar dohrata hai."
+        },
+        {
+            q: "2. Thorndike ka 'Law of Exercise' kis par sabse zyada zor deta hai?",
+            options: ["A) Physical fitness", "B) Abhyas aur Repetition (Practice)", "C) Exam hall timing", "D) Strict punishment"],
+            ans: 1,
+            exp: "Law of Exercise kehta hai ki abhyas (practice) karne se S-R bond (Skill Connection) strong hota hai."
+        }
+    ],
+    m3: [
+        {
+            q: "1. ADDIE Instructional Design Model mein 'A' ka kya matlab hai?",
+            options: ["A) Analysis (Needs & Target Audience)", "B) Application", "C) Assessment", "D) Alignment"],
+            ans: 0,
+            exp: "ADDIE Model mein A = Analysis hota hai, jisme learning requirement aur trainees ke background ko analyze karte hain."
+        }.
+      m4: [
+        {
+            q: "1. Demonstration Plan banate samay kis teaching method ke 4 steps ka use kiya jata hai?",
+            options: ["A) Lecture Method", "B) 4-Step Method (Preparation, Presentation, Application, Test)", "C) Discussion Method", "D) Project Method"],
+            ans: 1,
+            exp: "Demonstration plan hamesha 4-step method par adharit hota hai: Preparation, Presentation, Application aur Testing."
+        },
+        {
+            q: "2. Bloom's Taxonomy ke Cognitive Domain ka sabse highest level konsa hota hai?",
+            options: ["A) Knowledge", "B) Application", "C) Evaluation / Creating", "D) Comprehension"],
+            ans: 2,
+            exp: "Bloom's taxonomy me cognitive domain ka top level evaluation ya creating hota hai."
+        }
+    ],
+    m5: [
+        {
+            q: "1. Micro-Teaching (सूक्ष्म-शिक्षण) ka mukhya uddeshya kya hota hai?",
+            options: ["A) Bade hall mein lecture dena", "B) Student-teachers ki teaching skills ko controlled environment mein refine karna", "C) Written exam ki taiyari karwana", "D) Workshop ki safai karna"],
+            ans: 1,
+            exp: "Micro-teaching ek training technique hai jisme trainee teachers apni teaching skills ko chote group aur kam samay mein sudharte hain."
+        },
+        {
+            q: "2. Inme se konsa 'Projected Teaching Aid' ka udaharan hai?",
+            options: ["A) Blackboard", "B) LCD Projector", "C) Charts & Models", "D) Bulletin Board"],
+            ans: 1,
+            exp: "LCD Projector ek projected aid hai kyunki ye light aur projection ke madhyam se screen par images/videos dikhata hai."
+        }
+    ],
+    m6: [
+        {
+            q: "1. Written Instructional Material (WIM) ke antargat kisi specific operation ko step-by-step karne ke liye kaun si sheet use hoti hai?",
+            options: ["A) Information Sheet", "B) Operation Sheet", "C) Assignment Sheet", "D) Test Sheet"],
+            ans: 1,
+            exp: "Operation sheet trainee ko kisi machine operation ko kramwadh (step-by-step) aur surakshit tarike se karna sikhati hai."
+        },
+        {
+            q: "2. Information Sheet ka mukhya karya workshop mein kya hota hai?",
+            options: ["A) Sirf attendance lena", "B) Theoretical background aur technical details provide karna", "C) Machine repair karna", "D) Salary calculate karna"],
+            ans: 1,
+            exp: "Information sheet trainees ko job se judi zaroori theoretical jankari aur background knowledge deti hai."
+        }
+    ].
+};
+
+let userScore = 0;
+let totalAttempted = 0;
+let currentQuestions = [];
+
+function unlockApp() {
+    if (document.getElementById('pass-input').value === "UTKARSH@2559") {
+        sessionStorage.setItem("pot_auth", "true");
+        document.getElementById('lock-screen').style.display = "none";
+        document.getElementById('main-hub').style.display = "block";
+        startSelectedQuiz();
+    } else {
+        document.getElementById('lock-msg').innerText = "Incorrect Password!";
+    }
+}
+
+function lockApp() {
+    sessionStorage.removeItem("pot_auth");
+    location.reload();
+}
+
+if (sessionStorage.getItem("pot_auth") === "true") {
+    document.getElementById('lock-screen').style.display = "none";
+    document.getElementById('main-hub').style.display = "block";
+    window.onload = startSelectedQuiz;
+}
+
+function startSelectedQuiz() {
+    const mod = document.getElementById('module-select').value;
+    const container = document.getElementById('quiz-container');
+    const scoreCard = document.getElementById('score-card');
+    
+    userScore = 0;
+    totalAttempted = 0;
+    scoreCard.style.display = "block";
+    updateScoreUI(0, 0);
+    container.innerHTML = "";
+
+    if (mod === "master") {
+        currentQuestions = [];
+        Object.keys(potDatabase).forEach(k => currentQuestions.push(...potDatabase[k]));
+        // Shuffle / Randomize logic for Master Quiz
+        currentQuestions = currentQuestions.sort(() => Math.random() - 0.5);
+    } else {
+        currentQuestions = [...(potDatabase[mod] || [])];
+    }
+
+    if (currentQuestions.length === 0) {
+        container.innerHTML = "<p style='text-align:center; padding: 20px;'>Is Module ke questions update ho rahe hain...</p>";
+        return;
+    }
+
+    currentQuestions.forEach((qData, qIdx) => {
+        const card = document.createElement('div');
+        card.className = "card";
+        
+        let optsHTML = "";
+        qData.options.forEach((opt, oIdx) => {
+            optsHTML += `<button class="option-btn" onclick="checkAns(this, ${qIdx}, ${oIdx}, ${qData.ans})">${opt}</button>`;
+        });
+
+        card.innerHTML = `
+            <div class="q-title">${qData.q}</div>
+            <div class="options-grid" id="opt-group-${qIdx}">${optsHTML}</div>
+            <div class="explanation-box" id="exp-${qIdx}">
+                <strong>📌 NIMI Concept:</strong> ${qData.exp}
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
+
+function checkAns(btn, qIdx, selectedOpt, correctOpt) {
+    const parent = document.getElementById(`opt-group-${qIdx}`);
+    const buttons = parent.getElementsByClassName('option-btn');
+    const expBox = document.getElementById(`exp-${qIdx}`);
+
+    for (let b of buttons) { b.disabled = true; }
+
+    totalAttempted++;
+    if (selectedOpt === correctOpt) {
+        btn.classList.add('correct');
+        userScore++;
+    } else {
+        btn.classList.add('incorrect');
+        buttons[correctOpt].classList.add('correct');
+    }
+
+    expBox.style.display = "block";
+    updateScoreUI(userScore, currentQuestions.length);
+}
+
+function updateScoreUI(score, total) {
+    const percent = total > 0 ? Math.round((score / total) * 100) : 0;
+    document.getElementById('score-percent').innerText = `${percent}%`;
+    document.getElementById('score-details').innerText = `Correct: ${score} / ${total} Questions`;
+}
+</script>
+</body>
+</html>
