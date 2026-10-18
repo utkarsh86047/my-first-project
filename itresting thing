@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surprise | Utkarsh Mishra</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: #080b10;
+            color: #ffffff;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            background: rgba(18, 24, 38, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 40px 28px;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+            max-width: 420px;
+            width: 88%;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            border-radius: 20px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        .emoji-box {
+            font-size: 55px;
+            margin-bottom: 15px;
+            display: inline-block;
+            animation: float 2.5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .message-box {
+            font-size: 19px;
+            font-weight: 600;
+            min-height: 85px;
+            color: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.5;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #3b82f6, #06b6d4);
+            color: white;
+            border: none;
+            padding: 15px 34px;
+            font-size: 17px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+            transition: all 0.2s ease;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:hover {
+            transform: scale(1.04);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.96);
+        }
+
+        .developer-credit {
+            position: absolute;
+            bottom: 18px;
+            right: 20px;
+            z-index: 10;
+            font-size: 12px;
+            color: #9ca3af;
+            background: rgba(18, 24, 38, 0.75);
+            backdrop-filter: blur(8px);
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .developer-credit span {
+            color: #38bdf8;
+            font-weight: 700;
+        }
+
+        .final-alert {
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.5);
+        }
+
+        .final-alert .message-box {
+            color: #f87171;
+            font-size: 21px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="container" id="mainContainer">
+        <div class="badge">Interactive Web Experience</div>
+        <div class="emoji-box" id="emoji">✨</div>
+        <div class="message-box" id="text">आपके लिए एक खास मैसेज... स्टार्ट करने के लिए नीचे क्लिक करें!</div>
+        <button class="btn" id="actionBtn" onclick="nextStep()">Start / Next ➔</button>
+    </div>
+
+    <div class="developer-credit">Created by <span>Utkarsh Mishra</span></div>
+
+    <script>
+        // --- 1. Sound Synth Engine ---
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function playSound(type) {
+            if (!audioCtx) audioCtx = new AudioContext();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            if (type === 'click') {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.25, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } else if (type === 'boom') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(180, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(50, audioCtx.currentTime + 0.4);
+                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.4);
+            }
+        }
+
+        // --- 2. Advanced Interactive Particle Engine ---
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class OrbitParticle {
+            constructor() {
+                this.reset();
+            }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2.5 + 1;
+                this.speedX = (Math.random() - 0.5) * 1.2;
+                this.speedY = (Math.random() - 0.5) * 1.2;
+                this.hue = Math.random() * 60 + 200; // Blue/Purple gradient
+                this.alpha = Math.random() * 0.7 + 0.3;
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+            }
+            draw() {
+                ctx.fillStyle = `hsla(${this.hue}, 80%, 65%, ${this.alpha})`;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < 70; i++) particles.push(new OrbitParticle());
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // --- 3. Sequential Messages ---
+        const steps = [
+            { text: "क्या आपको पता है एक सीक्रेट बात? 🤫", emoji: "🤫" },
+            { text: "थोड़ा और ध्यान से देखिए... 😉", emoji: "👀" },
+            { text: "आप इस स्क्रीन पर अपना काफी टाइम लगा चुकी हैं! 😂", emoji: "⏱️" },
+            { text: "लगता है काफी उत्सुकता (Curiosity) है? 😜", emoji: "🔥" },
+            { text: "अब सीधा और साफ़ मैसेज... 🚨", emoji: "🛑" },
+            { text: "जितना टाइम यहाँ वेस्ट किया, अब चुपचाप जाकर पढ़ाई कर लो! 📚✍️", emoji: "📖" }
+        ];
+
+        let currentStep = 0;
+
+        function typeWriter(text, i) {
+            if (i < text.length) {
+                document.getElementById("text").innerHTML = text.substring(0, i + 1) + '<span style="color:#38bdf8">|</span>';
+                setTimeout(() => typeWriter(text, i + 1), 35);
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length) {
+                playSound('click');
+                const step = steps[currentStep];
+                document.getElementById("emoji").innerText = step.emoji;
+                typeWriter(step.text, 0);
+
+                if (currentStep === steps.length - 1) {
+                    playSound('boom');
+                    document.getElementById("actionBtn").style.display = "none";
+                    document.getElementById("mainContainer").classList.add("final-alert");
+                    explodeConfetti();
+                }
+
+                currentStep++;
+            }
+        }
+
+        function explodeConfetti() {
+            for (let i = 0; i < 100; i++) {
+                let p = new OrbitParticle();
+                p.size = Math.random() * 5 + 2;
+                p.speedX = (Math.random() - 0.5) * 10;
+                p.speedY = (Math.random() - 0.5) * 10;
+                p.hue = Math.random() * 360;
+                particles.push(p);
+            }
+        }
+    </script>
+</body>
+</html>
