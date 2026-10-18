@@ -24,6 +24,7 @@ button:hover{transform:translateY(-1px);opacity:0.95;}button:disabled{background
 .explanation-box{display:none;margin-top:18px;padding:15px;background:rgba(56,189,248,0.08);border-left:4px solid var(--accent-color);border-radius:6px;font-size:14px;line-height:1.5;}
 .nav-buttons{display:flex;justify-content:space-between;margin-top:20px;gap:10px;}.q-counter{text-align:center;font-size:14px;color:var(--accent-color);font-weight:bold;margin-bottom:12px;}
 .score-card{text-align:center;border:2px solid var(--accent-color);display:none;}.score-num{font-size:52px;font-weight:800;color:var(--accent-color);margin:15px 0;}
+.diagnostic-report{background:rgba(15,23,42,0.8);border:1px solid #334155;padding:15px;border-radius:10px;margin-top:15px;text-align:left;font-size:14px;line-height:1.6;}
 .developer-badge{margin-top:25px;padding:15px;background:rgba(56,189,248,0.08);border:1px dashed var(--accent-color);border-radius:10px;font-size:14px;color:var(--accent-color);text-align:center;font-weight:600;}
 footer{text-align:center;font-size:12px;color:var(--text-sub);margin-top:30px;padding-bottom:20px;}
 </style>
@@ -34,16 +35,47 @@ footer{text-align:center;font-size:12px;color:var(--text-sub);margin-top:30px;pa
 <div id="main-hub"><header class="glass-card" style="padding:16px 22px;"><div><h3 style="color:var(--accent-color);font-size:18px;">NIMI POT All-In-One Hub</h3><span style="font-size:12px;color:var(--text-sub);">Developer: Utkarsh Mishra</span></div><button onclick="lockApp()" style="padding:6px 14px;font-size:12px;">Lock</button></header>
 <div class="controls glass-card" style="padding:15px;"><select id="module-select" onchange="startSelectedQuiz()"><option value="m1">Module 1: Roles & Responsibilities (30 Qs)</option><option value="m2">Module 2: Psychology of Learning (30 Qs)</option><option value="m3">Module 3: Syllabus & ADDIE (30 Qs)</option><option value="master">🔥 All-POT Master Test (90 Qs Randomized)</option></select><button onclick="startSelectedQuiz()">Start Test</button></div>
 <div id="quiz-wrapper"><div id="q-counter" class="q-counter"></div><div id="quiz-container"></div><div class="nav-buttons" id="nav-buttons" style="display:none;"><button id="prev-btn" onclick="prevQuestion()" disabled>← Previous</button><button id="next-btn" onclick="nextQuestion()">Next →</button></div></div>
-<div id="score-card" class="glass-card score-card"><h3>🎉 Test Completed!</h3><div id="score-percent" class="score-num">0%</div><p id="score-details" style="font-size:18px;"></p><div class="developer-badge">⚡ Certified Assessment Hub — Designed & Developed by <strong>Utkarsh Mishra</strong> 🙏 Thanks for using this hub!</div><button onclick="startSelectedQuiz()" style="margin-top:22px;">Re-Take Test</button></div>
+<div id="score-card" class="glass-card score-card"><h3>🎉 Test Completed!</h3><div id="score-percent" class="score-num">0%</div><p id="score-details" style="font-size:18px;"></p><div id="diagnostic-box" class="diagnostic-report"></div><div class="developer-badge">⚡ Certified Assessment Hub — Designed & Developed by <strong>Utkarsh Mishra</strong> 🙏 Thanks for using this hub!</div><button onclick="startSelectedQuiz()" style="margin-top:22px;">Re-Take Test</button></div>
 <footer>© 2026 CITS POT Master Engine | All Rights Reserved • Utkarsh Mishra</footer></div></div>
 
 <script>
+// SECURITY: Block Developer Tools
 document.addEventListener('keydown',function(e){
     if(e.keyCode===123||(e.ctrlKey&&e.shiftKey&&(e.keyCode===73||e.keyCode===74||e.keyCode===67))||(e.ctrlKey&&e.keyCode===85)){
         e.preventDefault();
         return false;
     }
 });
+
+// SOUND EFFECTS GENERATOR (Web Audio API - No External Files Needed)
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function playSound(type) {
+    if(!audioCtx) return;
+    if(audioCtx.state === 'suspended') audioCtx.resume();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    
+    if(type === 'click') {
+        osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.08);
+    } else if(type === 'correct') {
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.1); // A5
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.3);
+    } else if(type === 'incorrect') {
+        osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(150, audioCtx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
+        osc.start(); osc.stop(audioCtx.currentTime + 0.25);
+    }
+}
 
 const potDatabase = {
 m1: [
@@ -165,7 +197,6 @@ function lockApp() {
     location.reload();
 }
 
-// Auto-login if previously unlocked in session
 window.addEventListener('DOMContentLoaded', () => {
     if(sessionStorage.getItem("pot_auth") === "true") {
         document.getElementById('lock-screen').style.display = "none";
@@ -254,10 +285,20 @@ function escapeHtml(str) {
 function selectAnswer(selectedOptText) {
     if(userAnswers[currentIndex] !== undefined) return;
     userAnswers[currentIndex] = selectedOptText;
+    
+    // Play Sound on Selection
+    const qData = currentQuestions[currentIndex];
+    if(selectedOptText === qData.ansText) {
+        playSound('correct');
+    } else {
+        playSound('incorrect');
+    }
+    
     renderQuestion();
 }
 
 function nextQuestion() {
+    playSound('click');
     if(currentIndex < currentQuestions.length - 1) {
         currentIndex++;
         renderQuestion();
@@ -267,6 +308,7 @@ function nextQuestion() {
 }
 
 function prevQuestion() {
+    playSound('click');
     if(currentIndex > 0) {
         currentIndex--;
         renderQuestion();
@@ -287,9 +329,21 @@ function finishQuiz() {
 
     document.getElementById('score-percent').innerText = `${percent}%`;
     document.getElementById('score-details').innerText = `Aapne ${total} mein se ${correctCount} questions sahi kiye!`;
+    
+    // Generate AI Diagnostic Insight Report
+    let diagnosticHTML = `<strong>🤖 AI Diagnostic Insight:</strong><br>`;
+    if(percent >= 80) {
+        diagnosticHTML += `✨ Excellent mastery! Aapka conceptual clarity aur NIMI standards par command shandar hai. Revision karte rahein!`;
+    } else if(percent >= 50) {
+        diagnosticHTML += `⚡ Good performance! Lekin kuch definitions aur laws par aur dhyan dene ki zaroorat hai. Explanation box dobara check karein.`;
+    } else {
+        diagnosticHTML += `⚠️ Needs Improvement! Is module ko dobara revise karke concepts clear karne ki avashyakta hai.`;
+    }
+    document.getElementById('diagnostic-box').innerHTML = diagnosticHTML;
+
     scoreCard.style.display = "block";
 
-    if(typeof confetti === 'function') {
+    if(percent >= 75 && typeof confetti === 'function') {
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
     }
 }
