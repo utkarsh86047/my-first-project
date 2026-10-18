@@ -3,306 +3,418 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neural Core | Utkarsh Mishra</title>
+    <title>CITS Trade & Quiz Hub | By Utkarsh Mishra</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Courier New', Courier, monospace;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
         body {
-            background-color: #030712;
-            color: #00f0ff;
-            height: 100vh;
-            overflow: hidden;
+            background-color: #0f172a;
+            color: #f8fafc;
+            min-height: 100vh;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
             align-items: center;
-            position: relative;
+            padding: 20px;
         }
 
-        canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .container {
-            position: relative;
-            z-index: 10;
-            background: rgba(3, 7, 18, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            padding: 45px 32px;
-            border-radius: 16px;
-            box-shadow: 0 0 50px rgba(0, 240, 255, 0.15), inset 0 0 20px rgba(0, 240, 255, 0.05);
-            max-width: 480px;
-            width: 90%;
+        .header {
             text-align: center;
-            transition: all 0.4s ease;
-        }
-
-        .terminal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: #94a3b8;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding-bottom: 12px;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-        }
-
-        .status-dot {
-            height: 8px;
-            width: 8px;
-            background-color: #00f0ff;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: 0 0 10px #00f0ff;
-            animation: blink 1.5s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        .emoji-box {
-            font-size: 50px;
             margin-bottom: 20px;
-            filter: drop-shadow(0 0 10px rgba(0, 240, 255, 0.4));
+            width: 100%;
+            max-width: 550px;
         }
 
-        .message-box {
-            font-size: 17px;
-            font-weight: 600;
-            min-height: 90px;
-            color: #e2e8f0;
+        .header h1 {
+            font-size: 22px;
+            color: #38bdf8;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .card {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            width: 100%;
+            max-width: 550px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            margin-bottom: 40px;
+        }
+
+        .tabs {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.6;
-            margin-bottom: 30px;
-            letter-spacing: 0.5px;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+            overflow-x: auto;
         }
 
-        .btn {
+        .tab-btn {
             background: transparent;
-            color: #00f0ff;
-            border: 2px solid #00f0ff;
-            padding: 14px 32px;
-            font-size: 15px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            border-radius: 4px;
+            border: none;
+            color: #94a3b8;
+            font-size: 13px;
+            font-weight: 600;
             cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
-            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 8px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: #0284c7;
+            color: #ffffff;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Calculator Styles */
+        .calc-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px 14px;
+            background: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 8px;
+            color: #f8fafc;
+            font-size: 14px;
             outline: none;
-            text-transform: uppercase;
         }
 
-        .btn:hover {
-            background: #00f0ff;
-            color: #030712;
-            box-shadow: 0 0 35px rgba(0, 240, 255, 0.6);
-            transform: translateY(-2px);
+        input:focus {
+            border-color: #38bdf8;
         }
 
-        .btn:active {
-            transform: translateY(1px);
+        .btn-calc {
+            background: linear-gradient(135deg, #0284c7, #06b6d4);
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .result-box {
+            margin-top: 18px;
+            padding: 14px;
+            background: #0f172a;
+            border-radius: 8px;
+            border-left: 4px solid #38bdf8;
+            font-size: 14px;
+            font-weight: 600;
+            color: #38bdf8;
+            text-align: center;
+        }
+
+        /* Quiz UI Styles */
+        .quiz-container {
+            background: #0f172a;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #334155;
+        }
+
+        .question-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: #f8fafc;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .option-btn {
+            display: block;
+            width: 100%;
+            padding: 10px 14px;
+            margin-bottom: 8px;
+            background: #1e293b;
+            border: 1px solid #475569;
+            color: #cbd5e1;
+            border-radius: 8px;
+            text-align: left;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover {
+            border-color: #38bdf8;
+            color: #ffffff;
+        }
+
+        .option-btn.correct {
+            background: #15803d !important;
+            border-color: #22c55e !important;
+            color: #ffffff !important;
+        }
+
+        .option-btn.wrong {
+            background: #b91c1c !important;
+            border-color: #ef4444 !important;
+            color: #ffffff !important;
+        }
+
+        .score-box {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 700;
+            color: #38bdf8;
+            padding: 10px;
         }
 
         .developer-credit {
-            position: absolute;
-            bottom: 20px;
-            right: 25px;
-            z-index: 10;
             font-size: 12px;
             color: #64748b;
-            background: rgba(3, 7, 18, 0.8);
-            padding: 8px 16px;
-            border-radius: 6px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            letter-spacing: 1px;
-            text-transform: uppercase;
+            text-align: center;
+            margin-top: auto;
         }
 
         .developer-credit span {
-            color: #00f0ff;
+            color: #38bdf8;
             font-weight: bold;
-        }
-
-        .system-override {
-            border-color: #ff0055;
-            box-shadow: 0 0 50px rgba(255, 0, 85, 0.25);
-        }
-
-        .system-override .message-box {
-            color: #ff0055;
-        }
-
-        .system-override .btn {
-            display: none;
         }
     </style>
 </head>
 <body>
 
-    <canvas id="canvas"></canvas>
-
-    <div class="container" id="mainContainer">
-        <div class="terminal-header">
-            <span>SECURE_LINK // V.4.0</span>
-            <span><span class="status-dot"></span> SYSTEM ACTIVE</span>
-        </div>
-        <div class="emoji-box" id="emoji">🌐</div>
-        <div class="message-box" id="text">INITIALIZING NEURAL PROTOCOL... CLICK TO PROCEED.</div>
-        <button class="btn" id="actionBtn" onclick="nextStep()">EXECUTE ➔</button>
+    <div class="header">
+        <h1>⚙️ CITS Trade & Workshop Toolkit</h1>
+        <p>Calculators & Interactive CBT MCQ Quizzes</p>
     </div>
 
-    <div class="developer-credit">ARCHITECT: <span>UTKARSH MISHRA</span></div>
+    <div class="card">
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab(event, 'quizTab')">📝 POT & CBT Quiz</button>
+            <button class="tab-btn" onclick="switchTab(event, 'turnerTab')">⚙️ Turner Lathe</button>
+            <button class="tab-btn" onclick="switchTab(event, 'electricianTab')">⚡ Electrician (Ohm)</button>
+            <button class="tab-btn" onclick="switchTab(event, 'tempTab')">🌡️ Temp Converter</button>
+        </div>
+
+        <!-- 1. Interactive MCQ Quiz Tab -->
+        <div id="quizTab" class="tab-content active">
+            <h3 style="font-size:15px; color:#38bdf8; margin-bottom:12px;">POT (Principles of Teaching) MCQ Quiz</h3>
+            <div class="quiz-container" id="quizBox">
+                <div class="question-text" id="qText">Loading question...</div>
+                <div id="optionsContainer"></div>
+                <div id="feedback" style="margin-top:10px; font-size:13px; font-weight:600; text-align:center;"></div>
+            </div>
+        </div>
+
+        <!-- 2. Turner Trade Calculator -->
+        <div id="turnerTab" class="tab-content">
+            <h3 style="font-size:15px; color:#38bdf8; margin-bottom:12px;">Taper Turning Angle Calculator</h3>
+            <div class="calc-group">
+                <label>Big Diameter D (mm):</label>
+                <input type="number" id="bigD" placeholder="e.g. 40">
+            </div>
+            <div class="calc-group">
+                <label>Small Diameter d (mm):</label>
+                <input type="number" id="smallD" placeholder="e.g. 30">
+            </div>
+            <div class="calc-group">
+                <label>Length of Taper L (mm):</label>
+                <input type="number" id="taperL" placeholder="e.g. 50">
+            </div>
+            <button class="btn-calc" onclick="calcTaper()">Calculate Angle (tan α)</button>
+            <div class="result-box" id="taperResult">Angle Result will appear here</div>
+        </div>
+
+        <!-- 3. Electrician Trade Calculator -->
+        <div id="electricianTab" class="tab-content">
+            <h3 style="font-size:15px; color:#38bdf8; margin-bottom:12px;">Ohm's Law & Power Calculator</h3>
+            <div class="calc-group">
+                <label>Voltage V (Volts):</label>
+                <input type="number" id="ohmV" placeholder="e.g. 230">
+            </div>
+            <div class="calc-group">
+                <label>Resistance R (Ohms):</label>
+                <input type="number" id="ohmR" placeholder="e.g. 10">
+            </div>
+            <button class="btn-calc" onclick="calcOhm()">Calculate Current & Power</button>
+            <div class="result-box" id="ohmResult">Current (I) & Power (P) Result</div>
+        </div>
+
+        <!-- 4. WCS Temperature Converter -->
+        <div id="tempTab" class="tab-content">
+            <h3 style="font-size:15px; color:#38bdf8; margin-bottom:12px;">Celsius (°C) to Fahrenheit (°F) & Kelvin (K)</h3>
+            <div class="calc-group">
+                <label>Temperature in Celsius (°C):</label>
+                <input type="number" id="tempC" placeholder="e.g. 100">
+            </div>
+            <button class="btn-calc" onclick="calcTemp()">Convert Temperature</button>
+            <div class="result-box" id="tempResult">Conversion Result</div>
+        </div>
+    </div>
+
+    <div class="developer-credit">Developed by <span>Utkarsh Mishra</span></div>
 
     <script>
-        // --- 1. Cinematic Sci-Fi Audio Engine ---
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx;
+        function switchTab(evt, tabName) {
+            let contents = document.getElementsByClassName("tab-content");
+            for (let c of contents) c.classList.remove("active");
 
-        function playSound(type) {
-            if (!audioCtx) audioCtx = new AudioContext();
-            if (audioCtx.state === 'suspended') audioCtx.resume();
+            let buttons = document.getElementsByClassName("tab-btn");
+            for (let b of buttons) b.classList.remove("active");
 
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain);
-            gain.connect(audioCtx.destination);
-
-            if (type === 'beep') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(1200, audioCtx.currentTime + 0.06);
-                gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.06);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.06);
-            } else if (type === 'cinematic_boom') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(120, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.8);
-                gain.gain.setValueAtTime(0.4, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.8);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.8);
-            }
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
         }
 
-        // --- 2. Advanced Matrix/Particle Background ---
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-
-        function resize() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        class CyberParticle {
-            constructor() {
-                this.reset();
+        // --- MCQ Quiz Data ---
+        const quizData = [
+            {
+                question: "1. In ADDIE Model, what does the letter 'A' stand for?",
+                options: ["Application", "Analysis", "Assessment", "Evaluation"],
+                correct: 1
+            },
+            {
+                question: "2. Which plan is prepared specifically for Trade Practical teaching in CTI?",
+                options: ["Lesson Plan", "Demonstration Plan", "Syllabus Plan", "Course Outline"],
+                correct: 1
+            },
+            {
+                question: "3. What is the first step in the 4-step teaching method?",
+                options: ["Presentation", "Preparation", "Application", "Testing"],
+                correct: 1
+            },
+            {
+                question: "4. In Ohm's Law (V = I * R), if Voltage increases keeping Resistance constant, what happens to Current?",
+                options: ["Increases", "Decreases", "Remains Same", "Becomes Zero"],
+                correct: 0
             }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 2 + 0.5;
-                this.speedX = (Math.random() - 0.5) * 1.5;
-                this.speedY = (Math.random() - 0.5) * 1.5;
-                this.color = Math.random() > 0.3 ? '#00f0ff' : '#bd00ff';
-                this.alpha = Math.random() * 0.8 + 0.2;
-            }
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-            }
-            draw() {
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.alpha;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.globalAlpha = 1.0;
-            }
-        }
-
-        for (let i = 0; i < 90; i++) particles.push(new CyberParticle());
-
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => {
-                p.update();
-                p.draw();
-            });
-            requestAnimationFrame(animate);
-        }
-        animate();
-
-        // --- 3. Cinematic Sci-Fi Sequence Steps ---
-        const steps = [
-            { text: "BYPASSING MAINFRAME FIREWALL...", emoji: "⚡" },
-            { text: "DECRYPTING CLASSIFIED NEURAL DATA...", emoji: "🔓" },
-            { text: "ESTABLISHING SECURE QUANTUM LINK...", emoji: "🛰️" },
-            { text: "ACCESS GRANTED. TARGET IDENTIFIED.", emoji: "🎯" },
-            { text: "WARNING: SYSTEM OVERLOAD DETECTED. PREPARE FOR IMPACT.", emoji: "⚠️" },
-            { text: "CORE BREACH: EXQUISITE TALENT DETECTED BY UTKARSH MISHRA.", emoji: "💎" }
         ];
 
-        let currentStep = 0;
+        let currentQ = 0;
+        let score = 0;
 
-        function typeWriter(text, i) {
-            if (i < text.length) {
-                document.getElementById("text").innerHTML = text.substring(0, i + 1) + '<span style="color:#00f0ff">_</span>';
-                setTimeout(() => typeWriter(text, i + 1), 25);
+        function loadQuestion() {
+            if (currentQ < quizData.length) {
+                const q = quizData[currentQ];
+                document.getElementById('qText').innerText = q.question;
+                const optContainer = document.getElementById('optionsContainer');
+                optContainer.innerHTML = '';
+                document.getElementById('feedback').innerText = '';
+
+                q.options.forEach((opt, idx) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.innerText = opt;
+                    btn.onclick = () => checkAnswer(idx, btn);
+                    optContainer.appendChild(btn);
+                });
+            } else {
+                document.getElementById('quizBox').innerHTML = `
+                    <div class="score-box">🎉 Quiz Completed!<br>Your Score: ${score} / ${quizData.length}</div>
+                    <button class="btn-calc" onclick="resetQuiz()">Restart Quiz</button>
+                `;
             }
         }
 
-        function nextStep() {
-            if (currentStep < steps.length) {
-                playSound('beep');
-                const step = steps[currentStep];
-                document.getElementById("emoji").innerText = step.emoji;
-                typeWriter(step.text, 0);
+        function checkAnswer(selectedIdx, btnElement) {
+            const correctIdx = quizData[currentQ].correct;
+            const allButtons = document.querySelectorAll('.option-btn');
+            allButtons.forEach(b => b.style.pointerEvents = 'none');
 
-                if (currentStep === steps.length - 1) {
-                    playSound('cinematic_boom');
-                    document.getElementById("mainContainer").classList.add("system-override");
-                    triggerCinematicPulse();
-                }
+            if (selectedIdx === correctIdx) {
+                btnElement.classList.add('correct');
+                document.getElementById('feedback').innerHTML = '<span style="color:#22c55e;">✓ Correct Answer!</span>';
+                score++;
+            } else {
+                btnElement.classList.add('wrong');
+                allButtons[correctIdx].classList.add('correct');
+                document.getElementById('feedback').innerHTML = '<span style="color:#ef4444;">✗ Wrong Answer!</span>';
+            }
 
-                currentStep++;
+            setTimeout(() => {
+                currentQ++;
+                loadQuestion();
+            }, 1200);
+        }
+
+        function resetQuiz() {
+            currentQ = 0;
+            score = 0;
+            document.getElementById('quizBox').innerHTML = `
+                <div class="question-text" id="qText"></div>
+                <div id="optionsContainer"></div>
+                <div id="feedback" style="margin-top:10px; font-size:13px; font-weight:600; text-align:center;"></div>
+            `;
+            loadQuestion();
+        }
+
+        loadQuestion();
+
+        // Calculators
+        function calcTaper() {
+            let D = parseFloat(document.getElementById('bigD').value);
+            let d = parseFloat(document.getElementById('smallD').value);
+            let L = parseFloat(document.getElementById('taperL').value);
+
+            if (D && d && L && D > d) {
+                let tanAlpha = (D - d) / (2 * L);
+                let angleRad = Math.atan(tanAlpha);
+                let angleDeg = angleRad * (180 / Math.PI);
+                document.getElementById('taperResult').innerHTML = `tan α = ${tanAlpha.toFixed(4)} <br> Compound Rest Angle = ${angleDeg.toFixed(2)}°`;
+            } else {
+                document.getElementById('taperResult').innerText = "Please enter valid D, d and L values (D > d).";
             }
         }
 
-        function triggerCinematicPulse() {
-            for (let i = 0; i < 150; i++) {
-                let p = new CyberParticle();
-                p.size = Math.random() * 4 + 1;
-                p.speedX = (Math.random() - 0.5) * 14;
-                p.speedY = (Math.random() - 0.5) * 14;
-                p.color = '#ff0055';
-                particles.push(p);
+        function calcOhm() {
+            let V = parseFloat(document.getElementById('ohmV').value);
+            let R = parseFloat(document.getElementById('ohmR').value);
+
+            if (V && R && R > 0) {
+                let I = V / R;
+                let P = V * I;
+                document.getElementById('ohmResult').innerHTML = `Current (I) = ${I.toFixed(2)} A <br> Power (P) = ${P.toFixed(2)} Watts`;
+            } else {
+                document.getElementById('ohmResult').innerText = "Please enter valid Voltage and Resistance values.";
+            }
+        }
+
+        function calcTemp() {
+            let C = parseFloat(document.getElementById('tempC').value);
+
+            if (!isNaN(C)) {
+                let F = (C * 9 / 5) + 32;
+                let K = C + 273.15;
+                document.getElementById('tempResult').innerHTML = `${F.toFixed(2)} °F | ${K.toFixed(2)} K`;
+            } else {
+                document.getElementById('tempResult').innerText = "Please enter a valid Celsius value.";
             }
         }
     </script>
