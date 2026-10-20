@@ -31,6 +31,11 @@ footer{text-align:center;font-size:12px;color:var(--text-sub);margin-top:30px;pa
 </head>
 <body oncontextmenu="return false;">
 <div class="container">
+    <!-- Timer aur Scoreboard Bar -->
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; padding: 12px 18px; background: rgba(15,23,42,0.8); border: 1px solid var(--accent-color); border-radius: 10px; color: #fff; font-size: 1rem;">
+      <div>⏳ <strong>Time Left:</strong> <span id="timer-display" style="color: #ff4d4d; font-weight: bold;">30</span>s</div>
+      <div>🎯 <strong>Score:</strong> <span id="score-display" style="color: var(--accent-color); font-weight: bold;">0.00</span></div>
+    </div>
 <div id="lock-screen" class="glass-card"><h2 style="color:var(--accent-color);">CITS POT Master Hub</h2><p style="color:var(--text-sub);margin-top:6px;font-size:14px;">Protected CBT Engine • Enter Authorized Key</p><input type="password" id="pass-input" placeholder="Password yahan daalein" onkeypress="if(event.key==='Enter') unlockApp()"><button onclick="unlockApp()" style="width:100%;">Unlock Access</button><p id="lock-msg" style="color:var(--error-color);margin-top:12px;font-size:14px;"></p><div style="margin-top:20px;font-size:12px;color:var(--text-sub);">Engineered by <strong>Utkarsh Mishra</strong></div></div>
 <div id="main-hub"><header class="glass-card" style="padding:16px 22px;"><div><h3 style="color:var(--accent-color);font-size:18px;">NIMI POT All-In-One Hub</h3><span style="font-size:12px;color:var(--text-sub);">Developer: Utkarsh Mishra</span></div><button onclick="lockApp()" style="padding:6px 14px;font-size:12px;">Lock</button></header>
 <div class="controls glass-card" style="padding:15px;"><select id="module-select" onchange="startSelectedQuiz()"><option value="m1">Module 1: Roles & Responsibilities (30 Qs)</option><option value="m2">Module 2: Psychology of Learning (30 Qs)</option><option value="m3">Module 3: Syllabus & ADDIE (30 Qs)</option><option value="m4">Module 4: Instructional Aids (30 Qs)</option><option value="m5">Module 5: Written Instructional Materials (30 Qs)</option><option value="m6">Module 6: Lesson Planning (30 Qs)</option><option value="m7">Module 7: Demonstration Method (30 Qs)</option><option value="m8">Module 8: Questioning Technique (30 Qs)</option><option value="m9">Module 9: Classroom & Workshop Management (30 Qs)</option><option value="m10">Module 10: Assessment & Evaluation (30 Qs)</option><option value="m11">Module 11: Guidance & Counselling (30 Qs)</option><option value="m12">Module 12: Entrepreneurship Development (30 Qs)</option><option value="m13">Module 13: Distance Learning & Educational Tech (30 Qs)</option><option value="m14">Module 14: Total Quality Management & Safety (30 Qs)</option><option value="m15">Module 15: Communication Skills in Teaching (30 Qs)</option><option value="m16">Module 16: Soft Skills & Professional Ethics (30 Qs)</option><option value="master">🔥 All-POT Master Test (480 Qs Randomized)</option></select><button onclick="startSelectedQuiz()">Start Test</button></div>
@@ -763,6 +768,32 @@ function finishQuiz() {
     if(percent >= 75 && typeof confetti === 'function') {
         confetti({ particleCount: 150, spread: 80, origin: { y: 0.6 } });
     }
+    // Timer aur Negative Marking Logic
+let timerInterval = null;
+let timeLeft = 30;
+let currentScore = 0;
+
+function resetAndStartTimer() {
+    clearInterval(timerInterval);
+    timeLeft = 30;
+    const timerElem = document.getElementById('timer-display');
+    if(timerElem) timerElem.innerText = timeLeft;
+    
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        if(timerElem) timerElem.innerText = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            applyPenalty();
+        }
+    }, 1000);
+}
+
+function applyPenalty() {
+    currentScore -= 0.25;
+    const scoreElem = document.getElementById('score-display');
+    if(scoreElem) scoreElem.innerText = currentScore.toFixed(2);
+}
 }
 </script>
 </body>
