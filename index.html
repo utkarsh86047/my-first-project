@@ -83,38 +83,338 @@ function playSound(type) {
 }
 
 const potDatabase = {
-m1: [
-{q:"1. Craftsmen Training Scheme (CTS) ko kis mukhya uddeshya ke sath shuru kiya gaya tha?",options:["Industrial sectors ke liye skilled manpower/craftsmen ki demand ko poora karna","Academic research aur higher degree dena","Sirf administrative clerical jobs ke liye training dena","Purely theoretical school education provide karna"],ansText:"Industrial sectors ke liye skilled manpower/craftsmen ki demand ko poora karna",exp:"NIMI standards ke anusar CTS ka primary focus industrial growth ke mutabiq technical/practical skilled workers tayar karna hai."},
-{q:"2. Craft Instructor Training Scheme (CITS) ka sabse mukhya aur pramukh lakshya kya hota hai?",options:["ITI trainees ko effectively padhane ke liye instructors ko Pedagogy aur teaching methodology mein train karna","Industrial factory workers ki salary fix karna","Engineering colleges ke liye professors tayar karna","Non-technical office management sikhana"],ansText:"ITI trainees ko effectively padhane ke liye instructors ko Pedagogy aur teaching methodology mein train karna",exp:"CITS ka mukhya uddeshya technical instructors ko teaching skills aur effective knowledge transfer methods se equip karna hai."},
-{q:"3. Directorate General of Training (DGT) kis central ministry ke administrative control ke antargat aati hai?",options:["Ministry of Skill Development and Entrepreneurship (MSDE)","Ministry of Education","Ministry of Labour and Employment","Ministry of Heavy Industries"],ansText:"Ministry of Skill Development and Entrepreneurship (MSDE)",exp:"DGT pehle Ministry of Labour ke under thi, ab yeh MSDE ke antargat desh ki vocational training policies govern karti hai."},
-{q:"4. Ek aadarsh (ideal) instructor ke vyaktitv mein kaun sa mukhya gun hone se training sabse prabhavi banti hai?",options:["Subject expertise ke sath-sath patience, empathy aur strong communication skills","Trainees par strict discipline rakhne ke liye darr ka mahol banana","Sirf theoretical books read karke chale jana","Practical work se door rehkar sirf lectures dena"],ansText:"Subject expertise ke sath-sath patience, empathy aur strong communication skills",exp:"Acche instructor ko subject ki deep knowledge hone ke saath-saath trainees ki mental state ko samajhne ki empathy honi chahiye."},
-{q:"5. National Council for Vocational Training (NCVT) ka mukhya karya kya hai?",options:["Vocational training ke national standards, curricula aur certification ke liye norms set karna","Industrial raw material ki prices decide karna","ITI buildings ka construction karna","Private engineering colleges ko funding dena"],ansText:"Vocational training ke national standards, curricula aur certification ke liye norms set karna",exp:"NCVT ek apex advisory body hai jo country-wide vocational training aur national trade certificates ko standardize karti hai."},
-{q:"6. National Skill Qualifications Framework (NSQF) kis prakar ka framework hai?",options:["Competency-based framework jo sabhi qualifications ko levels mein organize karta hai","Sirf school students ke liye ek scholarship scheme","Industrial taxation ka naya niyam","Government employees ki promotion policy"],ansText:"Competency-based framework jo sabhi qualifications ko levels mein organize karta hai",exp:"NSQF ek nationally integrated education and competency-based framework hai."},
-{q:"7. National Council for Vocational Education and Training (NCVET) ko kis roop mein sthapit kiya gaya hai?",options:["Vocational education aur training ke liye ek regulator (umbrella body)","Sirf exam form bharne ki agency","Ek manufacturing company","ITI sports club"],ansText:"Vocational education aur training ke liye ek regulator (umbrella body)",exp:"NCVET ko awarding bodies, assessment agencies aur skill institutes ko regulate karne ke liye banaya gaya hai."},
-{q:"8. Workshop ke andar safety rules ka sakhti se palan karwana instructor ki kis category ki responsibility mein aata hai?",options:["Safety aur Moral/Professional responsibility","Sirf financial accounting","Building maintenance work","Canteen management"],ansText:"Safety aur Moral/Professional responsibility",exp:"Trainees ki physical safety aur safe workshop practices ensure karna instructor ki top-most ethical duty hai."},
-{q:"9. Dual System of Training (DST) ki mukhya visheshzta kya hai?",options:["Training ka theoretical hissa ITI mein aur practical industrial exposure industry mein dena","Sirf online classes chalana","Training keval summer vacation mein dena","Ghar baithe degree lena"],ansText:"Training ka theoretical hissa ITI mein aur practical industrial exposure industry mein dena",exp:"DST model German dual education system par adharit hai."},
-{q:"10. Trainees ki practical progress aur skill development ko track karne ke liye instructor dwara sabse mukhya document kaun sa maintain kiya jata hai?",options:["Progress Chart (Training Progress Card)","Visitor Entry Register","Electricity Bill Log","Stock Purchase Ledger"],ansText:"Progress Chart (Training Progress Card)",exp:"Progress chart har trainee ke trade operations aur jobs ki completion status ka real-time graphical record hota hai."},
-{q:"11. 'Code of Ethics' ek instructor ke liye kyun avashyak hai?",options:["Professional integrity, fairness aur high moral conduct maintain karne ke liye","Sirf uniform pehnane ke liye","Late aane par fine bachane ke liye","Office politics ke liye"],ansText:"Professional integrity, fairness aur high moral conduct maintain karne ke liye",exp:"Code of Ethics instructor ko students ke prati fair, honest aur professional rehne ki guidance deta hai."},
-{q:"12. Trainees ke individual differences ko dhyan mein rakhte hue instructor ko kya apnana chahiye?",options:["Flexible teaching strategies aur remedial attention","Sabhi students ko ek hi speed se padhana chahe samajh aaye ya nahi","Slow learners ko class se nikal dena","Sirf toppers par dhyan dena"],ansText:"Flexible teaching strategies aur remedial attention",exp:"Har trainee ki grasping power alag hoti hai, isliye individual differences ko respect dena zaroori hai."},
-{q:"13. Apprenticeship Training Scheme (ATS) kis statutory act ke antargat regulated hoti hai?",options:["Apprentices Act 1961","Factories Act 1948","Industrial Disputes Act 1947","Consumer Protection Act 2019"],ansText:"Apprentices Act 1961",exp:"Apprenticeship training pure desh mein Apprentices Act 1961 ke tehat chalti hai."},
-{q:"14. Workshop management mein '5S' system ka pehla step 'Seiri' (Sort) ka kya arth hai?",options:["Zaroori aur gair-zaroori items ko alag karke unnecessary ko hatana","Sabhi tools ko zameen par fekh dena","Workshop ki rang-pootai karna","Roz subah attendance lena"],ansText:"Zaroori aur gair-zaroori items ko alag karke unnecessary ko hatana",exp:"Seiri ka matlab workspace se un sabhi cheezon ko hata dena hai jo current task ke liye zaroori nahi hain."},
-{q:"15. Micro-teaching session mein instructor ko kiska immediate feedback milta hai?",options:["Peer trainees aur supervisor ka teaching performance par","Government audit officer ka tax report par","Factory manager ka production output par","Market customer ka feedback"],ansText:"Peer trainees aur supervisor ka teaching performance par",exp:"Micro-teaching ek controlled teaching practice hai."},
-{q:"16. Vocational training mein 'Empathy' ka kya mahatva hai?",options:["Trainee ki learning difficulty ko uske nazariye se samajhna","Trainees ke sath emotional rona-dhona karna","Har galti ko bina soche maaf kar dena","Strict punishment dena"],ansText:"Trainee ki learning difficulty ko uske nazariye se samajhna",exp:"Empathy ka matlab student ki mental struggle ko samajhkar uske level par jakar help karna hai."},
-{q:"17. On-the-Job Training (OJT) ka sabse bada labh trainee ko kya milta hai?",options:["Real industrial environment, modern machinery aur live production pressure ka anubhav","Classroom mein baith kar notes likhna","Sirf exam ki tayari karna","Library books padhna"],ansText:"Real industrial environment, modern machinery aur live production pressure ka anubhav",exp:"OJT trainees ko industry ki actual working conditions se rubaroo karwata hai."},
-{q:"18. Instructor ki 'Communicative Clarity' ka teaching par kya prabhav padta hai?",options:["Trainees instructions ko bina kisi confusion ke turant samajh kar execute karte hain","Class mein shor sharaba badhta hai","Trainees confuse ho jate hain","Lecture lamba ho jata hai"],ansText:"Trainees instructions ko bina kisi confusion ke turant samajh kar execute karte hain",exp:"Spasht aur clear communication technical instructions ke liye anivarya hai."},
-{q:"19. Formative Assessment ka mukhya uddeshya training ke dauran kya hota hai?",options:["Continuous feedback dena aur learning gaps ko turant sudharna","Course ke ant mein final pass/fail certificate dena","Student ki caste check karna","Fees collect karna"],ansText:"Continuous feedback dena aur learning gaps ko turant sudharna",exp:"Formative assessment formative stage par learning ko monitor karne aur improve karne ke liye hota hai."},
-{q:"20. Instructor ko apni technical aur pedagogical knowledge ko update rakhne ke liye kya karna chahiye?",options:["Continuous Professional Development (CPD) aur refresher/training programs attend karna","Purane notes ko 20 saal tak repeat karna","Nayi technology se door rehna","Sirf practical workshop band rakhna"],ansText:"Continuous Professional Development (CPD) aur refresher/training programs attend karna",exp:"Modern industry aur automation ke daur mein instructor ke liye continuous learning anivarya hai."},
-{q:"21. Skill Competitions ka main objective kya hota hai?",options:["Trainees mein vocational excellence, speed aur perfection ki bhavna ko badhava dena","Sirf entertainment karna","Government funds spend karna","Training ko lambha khinchna"],ansText:"Trainees mein vocational excellence, speed aur perfection ki bhavna ko badhava dena",exp:"Ye competitions global standards ke mutabiq best craftsmanship ko samne late hain."},
-{q:"22. Workshop mein safety briefing job shuru karne se PEHLE kyun di jati hai?",options:["Trainees ko potential hazards aur safe operational procedures pehle se pata hon","Time pass karne ke liye","Attendance poori karne ke liye","Bad mein punishment dene ke liye"],ansText:"Trainees ko potential hazards aur safe operational procedures pehle se pata hon",exp:"Prevention is better than cure."},
-{q:"23. NSQF ke antargat ITI (CTS) passout ko kis level ki qualification milti hai?",options:["Level 3 / Level 4","Level 10","Level 1","Level 8"],ansText:"Level 3 / Level 4",exp:"Standard ITI certificate NSQF level 3 ya 4 ke equivalent designate kiya jata hai."},
-{q:"24. Trainee ke sudden behavioral change par instructor ka sabse pehla step kya hona chahiye?",options:["Private mein friendly counseling karke root cause pata lagana","Turant class se suspend kar dena","Sabke samne insult karna","Ignore karke aage badhna"],ansText:"Private mein friendly counseling karke root cause pata lagana",exp:"Instructor ek mentor bhi hota hai."},
-{q:"25. Instructor ka 'Leadership Role' workshop mein kaisa hona chahiye?",options:["Democratic aur supportive","Dictator jaisa","Bilkul inactive","Sirf punishment dene wala"],ansText:"Democratic aur supportive",exp:"Democratic leadership se trainees mein confidence aur team spirit develop hoti hai."},
-{q:"26. Institutional Training aur Industrial Training ka mukhya bridge kaun banata hai?",options:["Vocational Instructor aur Training Coordinator","College warden","Canteen contractor","Security guard"],ansText:"Vocational Instructor aur Training Coordinator",exp:"Instructor hi wo main kadi hai jo institute ke gyan ko industry ki zaruron se jodta hai."},
-{q:"27. Training records mein 'Attendance Register' ka hona kis baat ko ensure karta hai?",options:["Statutory compliance aur trainee ki regular presence ka legal record","Sirf punishment ke liye","Time pass ke liye","Notes likhne ke liye"],ansText:"Statutory compliance aur trainee ki regular presence ka legal record",exp:"Legal aur certification eligibility ke liye minimum attendance mandatory hoti hai."},
-{q:"28. 'Learning Culture' ek ITI workshop mein kaisa hona chahiye?",options:["Safe, cooperative, inquisitive aur hands-on working environment","Dar aur shor sharabe wala mahol","Sirf ratta marne wala room","Bilkul sunsaan"],ansText:"Safe, cooperative, inquisitive aur hands-on working environment",exp:"Ek healthy learning culture mein sawal puchne ki aur experiment karne ki azadi hoti hai."},
-{q:"29. DGT ke dwara naye courses aur trades ko launch karne ka main aadhar kya hota hai?",options:["Market survey aur emerging industrial technologies (Industry 4.0)","Instructor ki marzi","Purani books ki availability","Building ki jagah"],ansText:"Market survey aur emerging industrial technologies (Industry 4.0)",exp:"Curriculum hamesha job market ki modern demand ke anusar evolve kiya jata hai."},
-{q:"30. Ek aadarsh instructor ka ultimate goal kya hona chahiye?",options:["Aise competent, confident aur safe-conscious skilled technicians banana jo desh ke vikas mein yogdan dein","Sirf exam mein 100% pass percentage dikhana","Government salary time par lena","Workshop mein kam se kam kaam karna"],ansText:"Aise competent, confident aur safe-conscious skilled technicians banana jo desh ke vikas mein yogdan dein",exp:"Instructor ka mukhya lakshya desh ke liye industry-ready skilled workforce tayar karna hai."}
+   m1: [
+{
+q: "1. What is the main focus of Module 1? / मॉड्यूल 1 का मुख्य विषय क्या है?",
+options: [
+"Roles and responsibilities of an instructor / अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ",
+"Psychology of learning / अधिगम का मनोविज्ञान",
+"Instructional technology / अनुदेशन प्रौद्योगिकी",
+"Assessment and certification / मूल्यांकन एवं प्रमाणन"
 ],
+ansText: "Roles and responsibilities of an instructor / अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ",
+exp: "Module 1 covers the roles and responsibilities of an instructor. / मॉड्यूल 1 में अनुदेशक की भूमिकाओं और जिम्मेदारियों का अध्ययन किया जाता है।"
+},
+{
+q: "2. Which topic is included in Module 1? / मॉड्यूल 1 में निम्नलिखित में से कौन-सा विषय शामिल है?",
+options: [
+"Computer programming / कंप्यूटर प्रोग्रामिंग",
+"Overview of the vocational scenario in India / भारत में व्यावसायिक परिदृश्य का अवलोकन",
+"Lathe machine maintenance / खराद मशीन का रखरखाव",
+"Electrical circuit design / विद्युत परिपथ की अभिकल्पना"
+],
+ansText: "Overview of the vocational scenario in India / भारत में व्यावसायिक परिदृश्य का अवलोकन",
+exp: "The module includes an overview of the vocational scenario in India. / इस मॉड्यूल में भारत के व्यावसायिक परिदृश्य का अवलोकन शामिल है।"
+},
+{
+q: "3. Which subject deals specifically with the psychology of learning? / अधिगम के मनोविज्ञान का अध्ययन विशेष रूप से किस मॉड्यूल में किया जाता है?",
+options: [
+"Module 1 / मॉड्यूल 1",
+"Module 3 / मॉड्यूल 3",
+"Module 2 / मॉड्यूल 2",
+"Module 5 / मॉड्यूल 5"
+],
+ansText: "Module 2 / मॉड्यूल 2",
+exp: "The book lists Psychology of Learning as Module 2. / पुस्तक में अधिगम का मनोविज्ञान मॉड्यूल 2 के रूप में दिया गया है।"
+},
+{
+q: "4. Which topic follows the overview of the vocational scenario in Module 1? / मॉड्यूल 1 में व्यावसायिक परिदृश्य के अवलोकन के बाद कौन-सा प्रमुख विषय दिया गया है?",
+options: [
+"Questioning techniques / प्रश्न पूछने की तकनीकें",
+"Roles and responsibilities of an instructor / अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ",
+"Written instructional materials / लिखित अनुदेशात्मक सामग्री",
+"Emerging technologies / उभरती प्रौद्योगिकियाँ"
+],
+ansText: "Roles and responsibilities of an instructor / अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ",
+exp: "The module outline lists instructor roles and responsibilities after the vocational scenario topic. / मॉड्यूल की विषय-सूची में व्यावसायिक परिदृश्य के बाद अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ दी गई हैं।"
+},
+{
+q: "5. Which quality is most relevant to the topic 'Essential Traits of a Good Instructor'? / 'एक अच्छे अनुदेशक के आवश्यक गुण' विषय का संबंध किससे है?",
+options: [
+"Qualities required for effective instruction / प्रभावी अनुदेशन के लिए आवश्यक गुण",
+"Methods of machine production / मशीन उत्पादन की विधियाँ",
+"Types of cutting tools / काटने वाले औजारों के प्रकार",
+"Computer hardware components / कंप्यूटर के हार्डवेयर घटक"
+],
+ansText: "Qualities required for effective instruction / प्रभावी अनुदेशन के लिए आवश्यक गुण",
+exp: "The topic concerns the essential traits of a good instructor. / यह विषय एक अच्छे अनुदेशक में आवश्यक गुणों से संबंधित है।"
+},
+{
+q: "6. Which module covers the principles and theories of learning? / अधिगम के सिद्धांतों और नियमों का अध्ययन किस मॉड्यूल में किया जाता है?",
+options: [
+"Module 4 / मॉड्यूल 4",
+"Module 1 / मॉड्यूल 1",
+"Module 2 / मॉड्यूल 2",
+"Module 6 / मॉड्यूल 6"
+],
+ansText: "Module 2 / मॉड्यूल 2",
+exp: "The book places the principles and theories of learning in Module 2. / पुस्तक में अधिगम के सिद्धांतों और नियमों को मॉड्यूल 2 में रखा गया है।"
+},
+{
+q: "7. Which topic is explicitly listed in Module 1? / मॉड्यूल 1 की विषय-सूची में कौन-सा विषय स्पष्ट रूप से दिया गया है?",
+options: [
+"Characteristics of good instruction and common defects in instruction / अच्छे अनुदेशन की विशेषताएँ और अनुदेशन के सामान्य दोष",
+"Computer networking protocols / कंप्यूटर नेटवर्किंग प्रोटोकॉल",
+"Industrial welding positions / औद्योगिक वेल्डिंग की स्थितियाँ",
+"Lathe cutting speed calculations / खराद की कटिंग गति की गणनाएँ"
+],
+ansText: "Characteristics of good instruction and common defects in instruction / अच्छे अनुदेशन की विशेषताएँ और अनुदेशन के सामान्य दोष",
+exp: "This is one of the theory topics listed under Module 1. / यह मॉड्यूल 1 के अंतर्गत दिए गए सैद्धांतिक विषयों में से एक है।"
+},
+{
+q: "8. The term 'vocational training' is most closely associated with which purpose? / 'व्यावसायिक प्रशिक्षण' का सबसे निकट संबंध किस उद्देश्य से है?",
+options: [
+"Learning only literary subjects / केवल साहित्यिक विषयों का अध्ययन",
+"Developing skills related to an occupation / किसी व्यवसाय से संबंधित कौशल विकसित करना",
+"Memorising unrelated facts / असंबंधित तथ्यों को याद करना",
+"Studying without practical application / व्यावहारिक प्रयोग के बिना अध्ययन करना"
+],
+ansText: "Developing skills related to an occupation / किसी व्यवसाय से संबंधित कौशल विकसित करना",
+exp: "Vocational training is generally directed towards occupational skills. This is a general concept, not a verbatim statement from the book. / व्यावसायिक प्रशिक्षण का सामान्य उद्देश्य व्यवसाय-संबंधी कौशल विकसित करना है। यह सामान्य अवधारणा है, पुस्तक का शब्दशः कथन नहीं।"
+},
+{
+q: "9. Which topic in Module 1 focuses on the instructor's professional qualities? / मॉड्यूल 1 में अनुदेशक के व्यावसायिक गुणों पर कौन-सा विषय केंद्रित है?",
+options: [
+"Overview of vocational scenario / व्यावसायिक परिदृश्य का अवलोकन",
+"Essential traits of a good instructor / एक अच्छे अनुदेशक के आवश्यक गुण",
+"Psychology of learning / अधिगम का मनोविज्ञान",
+"Planning for instruction / अनुदेशन की योजना बनाना"
+],
+ansText: "Essential traits of a good instructor / एक अच्छे अनुदेशक के आवश्यक गुण",
+exp: "The module explicitly includes Essential Traits of a Good Instructor. / मॉड्यूल में 'एक अच्छे अनुदेशक के आवश्यक गुण' विषय स्पष्ट रूप से शामिल है।"
+},
+{
+q: "10. Which topic is listed as Module 3 in the book's contents? / पुस्तक की विषय-सूची के अनुसार मॉड्यूल 3 का विषय कौन-सा है?",
+options: [
+"Instructional technology / अनुदेशन प्रौद्योगिकी",
+"Psychology of learning / अधिगम का मनोविज्ञान",
+"Planning for instruction and skills practice / अनुदेशन एवं कौशल अभ्यास की योजना बनाना",
+"Roles and responsibilities of an instructor / अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ"
+],
+ansText: "Planning for instruction and skills practice / अनुदेशन एवं कौशल अभ्यास की योजना बनाना",
+exp: "The contents list planning for instruction and skills practice as Module 3. / विषय-सूची में अनुदेशन एवं कौशल अभ्यास की योजना को मॉड्यूल 3 के रूप में दिया गया है।"
+},
+{
+q: "11. Which topic is covered in Module 4? / मॉड्यूल 4 में कौन-सा विषय पढ़ाया जाता है?",
+options: [
+"Instructional technology / अनुदेशन प्रौद्योगिकी",
+"Learning psychology / अधिगम मनोविज्ञान",
+"Emerging technologies / उभरती प्रौद्योगिकियाँ",
+"Entrepreneurship / उद्यमिता"
+],
+ansText: "Instructional technology / अनुदेशन प्रौद्योगिकी",
+exp: "The book's contents identify Instructional Technology as Module 4. / पुस्तक की विषय-सूची में अनुदेशन प्रौद्योगिकी को मॉड्यूल 4 बताया गया है।"
+},
+{
+q: "12. Which module deals with Written Instructional Materials (WIM)? / लिखित अनुदेशात्मक सामग्री (WIM) किस मॉड्यूल का विषय है?",
+options: [
+"Module 2 / मॉड्यूल 2",
+"Module 5 / मॉड्यूल 5",
+"Module 1 / मॉड्यूल 1",
+"Module 8 / मॉड्यूल 8"
+],
+ansText: "Module 5 / मॉड्यूल 5",
+exp: "Written Instructional Materials is listed under Module 5. / लिखित अनुदेशात्मक सामग्री को मॉड्यूल 5 में रखा गया है।"
+},
+{
+q: "13. Which module focuses on assessment and certification? / मूल्यांकन एवं प्रमाणन पर कौन-सा मॉड्यूल केंद्रित है?",
+options: [
+"Module 6 / मॉड्यूल 6",
+"Module 7 / मॉड्यूल 7",
+"Module 8 / मॉड्यूल 8",
+"Module 1 / मॉड्यूल 1"
+],
+ansText: "Module 7 / मॉड्यूल 7",
+exp: "The book's contents list Assessment and Certification under Module 7. / पुस्तक की विषय-सूची में मूल्यांकन एवं प्रमाणन को मॉड्यूल 7 के अंतर्गत रखा गया है।"
+},
+{
+q: "14. Which topic is included in Module 1 according to the contents? / विषय-सूची के अनुसार मॉड्यूल 1 में कौन-सा विषय शामिल है?",
+options: [
+"Adult learning / वयस्क अधिगम",
+"Counselling and mentoring / परामर्श एवं मार्गदर्शन",
+"Introduction and DGT skill development programmes / परिचय एवं DGT के कौशल विकास कार्यक्रम",
+"Emerging technologies / उभरती प्रौद्योगिकियाँ"
+],
+ansText: "Introduction and DGT skill development programmes / परिचय एवं DGT के कौशल विकास कार्यक्रम",
+exp: "The module outline includes an exercise on introduction and DGT skill development programmes. / मॉड्यूल की विषय-सूची में परिचय एवं DGT के कौशल विकास कार्यक्रमों से संबंधित अभ्यास शामिल है।"
+},
+{
+q: "15. What is the most suitable reason for studying the vocational scenario in India? / भारत में व्यावसायिक परिदृश्य का अध्ययन करने का सबसे उपयुक्त कारण क्या है?",
+options: [
+"To understand the context of vocational education and training / व्यावसायिक शिक्षा एवं प्रशिक्षण की पृष्ठभूमि को समझना",
+"To replace all practical training with theory / सभी व्यावहारिक प्रशिक्षण को सिद्धांत से बदलना",
+"To learn only computer programming / केवल कंप्यूटर प्रोग्रामिंग सीखना",
+"To avoid learning about occupations / व्यवसायों के बारे में सीखने से बचना"
+],
+ansText: "To understand the context of vocational education and training / व्यावसायिक शिक्षा एवं प्रशिक्षण की पृष्ठभूमि को समझना",
+exp: "This is a general interpretation of the topic title, not a quoted learning outcome from the book. / यह विषय के शीर्षक की सामान्य व्याख्या है, पुस्तक से उद्धृत अधिगम-परिणाम नहीं।"
+},
+{
+q: "16. Which of the following is a title in Module 1? / निम्नलिखित में से कौन-सा मॉड्यूल 1 का शीर्षक है?",
+options: [
+"Learning theories / अधिगम के सिद्धांत",
+"Essential traits of a good instructor / एक अच्छे अनुदेशक के आवश्यक गुण",
+"Instructional technology / अनुदेशन प्रौद्योगिकी",
+"Entrepreneurship / उद्यमिता"
+],
+ansText: "Essential traits of a good instructor / एक अच्छे अनुदेशक के आवश्यक गुण",
+exp: "This title appears in the Module 1 contents. / यह शीर्षक मॉड्यूल 1 की विषय-सूची में दिया गया है।"
+},
+{
+q: "17. Which topic is associated with Module 8? / मॉड्यूल 8 का संबंध किस विषय से है?",
+options: [
+"Management of instruction / अनुदेशन का प्रबंधन",
+"Vocational scenario in India / भारत में व्यावसायिक परिदृश्य",
+"Psychology of learning / अधिगम का मनोविज्ञान",
+"Roles of an instructor / अनुदेशक की भूमिकाएँ"
+],
+ansText: "Management of instruction / अनुदेशन का प्रबंधन",
+exp: "The contents list Management of Instruction as Module 8. / विषय-सूची में अनुदेशन का प्रबंधन मॉड्यूल 8 है।"
+},
+{
+q: "18. Which module covers counselling and mentoring? / परामर्श एवं मार्गदर्शन किस मॉड्यूल में शामिल है?",
+options: [
+"Module 9 / मॉड्यूल 9",
+"Module 1 / मॉड्यूल 1",
+"Module 4 / मॉड्यूल 4",
+"Module 6 / मॉड्यूल 6"
+],
+ansText: "Module 9 / मॉड्यूल 9",
+exp: "The contents list Counselling and Mentoring as Module 9. / विषय-सूची में परामर्श एवं मार्गदर्शन मॉड्यूल 9 है।"
+},
+{
+q: "19. Which topic belongs to Module 10? / मॉड्यूल 10 में कौन-सा विषय शामिल है?",
+options: [
+"Entrepreneurship / उद्यमिता",
+"Learning psychology / अधिगम मनोविज्ञान",
+"Good instructor traits / अच्छे अनुदेशक के गुण",
+"Written instructional materials / लिखित अनुदेशात्मक सामग्री"
+],
+ansText: "Entrepreneurship / उद्यमिता",
+exp: "Entrepreneurship is listed as Module 10 in the book's contents. / पुस्तक की विषय-सूची में उद्यमिता मॉड्यूल 10 है।"
+},
+{
+q: "20. Which module covers Information and Communication Technology (ICT)? / सूचना एवं संचार प्रौद्योगिकी (ICT) किस मॉड्यूल में शामिल है?",
+options: [
+"Module 3 / मॉड्यूल 3",
+"Module 11 / मॉड्यूल 11",
+"Module 5 / मॉड्यूल 5",
+"Module 1 / मॉड्यूल 1"
+],
+ansText: "Module 11 / मॉड्यूल 11",
+exp: "The contents list ICT as Module 11. / विषय-सूची में ICT को मॉड्यूल 11 के रूप में दिया गया है।"
+},
+{
+q: "21. Which topic is covered in Module 12? / मॉड्यूल 12 में कौन-सा विषय दिया गया है?",
+options: [
+"NSQF and Qualification Packs / NSQF एवं क्वालिफिकेशन पैक",
+"Instructional technology / अनुदेशन प्रौद्योगिकी",
+"Roles and responsibilities of an instructor / अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ",
+"Questioning techniques / प्रश्न पूछने की तकनीकें"
+],
+ansText: "NSQF and Qualification Packs / NSQF एवं क्वालिफिकेशन पैक",
+exp: "The book lists NSQF and Qualification Packs under Module 12. / पुस्तक में NSQF एवं क्वालिफिकेशन पैक मॉड्यूल 12 में हैं।"
+},
+{
+q: "22. Which module is dedicated to adult learning? / वयस्क अधिगम के लिए कौन-सा मॉड्यूल निर्धारित है?",
+options: [
+"Module 13 / मॉड्यूल 13",
+"Module 2 / मॉड्यूल 2",
+"Module 7 / मॉड्यूल 7",
+"Module 1 / मॉड्यूल 1"
+],
+ansText: "Module 13 / मॉड्यूल 13",
+exp: "Adult Learning is listed as Module 13. / वयस्क अधिगम को मॉड्यूल 13 के रूप में दिया गया है।"
+},
+{
+q: "23. Which topic is included in Module 14? / मॉड्यूल 14 में कौन-सा विषय शामिल है?",
+options: [
+"Continuing Professional Development (CPD) / सतत व्यावसायिक विकास (CPD)",
+"Vocational scenario / व्यावसायिक परिदृश्य",
+"Learning psychology / अधिगम मनोविज्ञान",
+"Written instructional materials / लिखित अनुदेशात्मक सामग्री"
+],
+ansText: "Continuing Professional Development (CPD) / सतत व्यावसायिक विकास (CPD)",
+exp: "The contents identify CPD as Module 14. / विषय-सूची में CPD को मॉड्यूल 14 बताया गया है।"
+},
+{
+q: "24. Which module includes Employability Skills? / रोजगारपरक कौशल किस मॉड्यूल में शामिल हैं?",
+options: [
+"Module 15 / मॉड्यूल 15",
+"Module 1 / मॉड्यूल 1",
+"Module 8 / मॉड्यूल 8",
+"Module 3 / मॉड्यूल 3"
+],
+ansText: "Module 15 / मॉड्यूल 15",
+exp: "Employability Skills is listed as Module 15. / रोजगारपरक कौशल को मॉड्यूल 15 में रखा गया है।"
+},
+{
+q: "25. Which module deals with developing future skills in emerging technologies? / उभरती प्रौद्योगिकियों में भविष्य के कौशल विकसित करने से संबंधित मॉड्यूल कौन-सा है?",
+options: [
+"Module 16 / मॉड्यूल 16",
+"Module 6 / मॉड्यूल 6",
+"Module 9 / मॉड्यूल 9",
+"Module 1 / मॉड्यूल 1"
+],
+ansText: "Module 16 / मॉड्यूल 16",
+exp: "The contents identify developing future skills in emerging technologies as Module 16. / विषय-सूची में उभरती प्रौद्योगिकियों में भविष्य के कौशल विकसित करना मॉड्यूल 16 है।"
+},
+{
+q: "26. Which of these is the correct Module 1 title? / निम्नलिखित में से मॉड्यूल 1 का सही शीर्षक कौन-सा है?",
+options: [
+"Assessment and Certification / मूल्यांकन एवं प्रमाणन",
+"Roles and Responsibilities of an Instructor / अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ",
+"Management of Instruction / अनुदेशन का प्रबंधन",
+"Psychology of Learning / अधिगम का मनोविज्ञान"
+],
+ansText: "Roles and Responsibilities of an Instructor / अनुदेशक की भूमिकाएँ और जिम्मेदारियाँ",
+exp: "This is the exact title given for Module 1 in the contents. / विषय-सूची में मॉड्यूल 1 का यही शीर्षक दिया गया है।"
+},
+{
+q: "27. What is the best approach when using the book's module outline for exam preparation? / परीक्षा की तैयारी में पुस्तक की मॉड्यूल-विषय-सूची का उपयोग करने का सबसे अच्छा तरीका क्या है?",
+options: [
+"Study only the module titles and ignore the chapters / केवल मॉड्यूल के शीर्षक पढ़कर अध्यायों को छोड़ देना",
+"Use the outline to locate topics, then study the relevant content / विषयों का पता लगाने के लिए विषय-सूची का उपयोग करके संबंधित सामग्री पढ़ना",
+"Assume every topic has the same number of questions / मान लेना कि प्रत्येक विषय से समान प्रश्न आते हैं",
+"Memorise answer letters without understanding / समझे बिना उत्तरों के अक्षर याद करना"
+],
+ansText: "Use the outline to locate topics, then study the relevant content / विषयों का पता लगाने के लिए विषय-सूची का उपयोग करके संबंधित सामग्री पढ़ना",
+exp: "A contents page helps locate topics; it does not establish exam question weightage. / विषय-सूची विषयों का पता लगाने में सहायता करती है; इससे परीक्षा में प्रश्नों का भार निर्धारित नहीं होता।"
+},
+{
+q: "28. Which statement about Module 1 is supported by the book's contents? / मॉड्यूल 1 के बारे में कौन-सा कथन पुस्तक की विषय-सूची से समर्थित है?",
+options: [
+"It includes instructor roles and essential traits / इसमें अनुदेशक की भूमिकाएँ और आवश्यक गुण शामिल हैं",
+"It contains only computer programming / इसमें केवल कंप्यूटर प्रोग्रामिंग है",
+"It is exclusively about assessment / यह केवल मूल्यांकन पर आधारित है",
+"It contains only practical machine operations / इसमें केवल मशीन संचालन का व्यावहारिक कार्य है"
+],
+ansText: "It includes instructor roles and essential traits / इसमें अनुदेशक की भूमिकाएँ और आवश्यक गुण शामिल हैं",
+exp: "Both instructor roles and essential traits appear in the Module 1 contents. / मॉड्यूल 1 की विषय-सूची में अनुदेशक की भूमिकाएँ और आवश्यक गुण, दोनों शामिल हैं।"
+},
+{
+q: "29. Which topic is most directly connected with identifying defects in teaching? / शिक्षण में दोषों की पहचान से सबसे सीधा संबंध किस विषय का है?",
+options: [
+"Characteristics of good instruction and common defects in instruction / अच्छे अनुदेशन की विशेषताएँ और अनुदेशन के सामान्य दोष",
+"Emerging technologies / उभरती प्रौद्योगिकियाँ",
+"Entrepreneurship / उद्यमिता",
+"NSQF and Qualification Packs / NSQF एवं क्वालिफिकेशन पैक"
+],
+ansText: "Characteristics of good instruction and common defects in instruction / अच्छे अनुदेशन की विशेषताएँ और अनुदेशन के सामान्य दोष",
+exp: "The title explicitly covers characteristics of good instruction and common defects. / इस शीर्षक में अच्छे अनुदेशन की विशेषताओं और सामान्य दोषों का स्पष्ट उल्लेख है।"
+},
+{
+q: "30. Which statement best describes the scope of Module 1? / मॉड्यूल 1 के दायरे का सबसे उपयुक्त वर्णन कौन-सा है?",
+options: [
+"It introduces the vocational context and the instructor's roles, responsibilities, and essential traits / यह व्यावसायिक पृष्ठभूमि तथा अनुदेशक की भूमिकाओं, जिम्मेदारियों और आवश्यक गुणों का परिचय देता है",
+"It teaches only advanced computer networking / यह केवल उन्नत कंप्यूटर नेटवर्किंग सिखाता है",
+"It covers only written instructional materials / यह केवल लिखित अनुदेशात्मक सामग्री को शामिल करता है",
+"It focuses only on emerging technologies / यह केवल उभरती प्रौद्योगिकियों पर केंद्रित है"
+],
+ansText: "It introduces the vocational context and the instructor's roles, responsibilities, and essential traits / यह व्यावसायिक पृष्ठभूमि तथा अनुदेशक की भूमिकाओं, जिम्मेदारियों और आवश्यक गुणों का परिचय देता है",
+exp: "This summary follows the topics listed under Module 1 in the book's contents. / यह सारांश पुस्तक की विषय-सूची में मॉड्यूल 1 के अंतर्गत दिए गए विषयों पर आधारित है।"
+}
+], 
 m2: [
 {q:"1. Thorndike ke 'Law of Effect' ka learning par sabse bada prabhav kya hai?",options:["Jab kisi learning action ka result satisfying/rewarding hota hai, toh wo behavior strong ho jata hai","Punaravriti se hi sab kuch hota hai","Darr se learning fast hoti hai","Learning ka result se koi lena-dena nahi hai"],ansText:"Jab kisi learning action ka result satisfying/rewarding hota hai, toh wo behavior strong ho jata hai",exp:"Law of Effect kehta hai ki positive consequences S-R bond ko mazboot banate hain."},
 {q:"2. Thorndike ka 'Law of Exercise' kis siddhant par zor deta hai?",options:["Law of Use and Disuse (jitna abhyas karoge, skill utni pakki hogi)","Sirf ek baar padhne par permanent yaad hona","Bina practice ke master ban jana","Sirf sone se memory badhna"],ansText:"Law of Use and Disuse (jitna abhyas karoge, skill utni pakki hogi)",exp:"Repetition aur practice se neural connection strong hote hain."},
