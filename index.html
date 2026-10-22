@@ -1199,7 +1199,7 @@ m9: [
 
 let currentQuestions = [];
 let currentIndex = 0;
-let userAnswers. = {};
+let userAnswers = {};
 
 function unlockApp() {
     const val = document.getElementById('pass-input').value.trim();
@@ -1232,7 +1232,7 @@ function startSelectedQuiz() {
     document.getElementById('quiz-wrapper').style.display = "block";
     
     currentIndex = 0;
-    userAnswers. = {};
+    userAnswers = {};
 
     let rawQuestions = [];
     if(mod === "master") {
@@ -1241,17 +1241,18 @@ function startSelectedQuiz() {
     } else {
         rawQuestions = JSON.parse(JSON.stringify(potDatabase[mod] || []));
     }
-
     currentQuestions = rawQuestions.map(q => {
-        let shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
-        return {
-            q: q.q,
-            options: shuffledOpts,
-            ansText: q.ansText,
-            exp: q.exp
-        };
-    });
-
+    let shuffledOpts = [...q.options].sort(() => Math.random() - 0.5);
+    let correctText = q.ansText ? q.ansText : q.options[q.ans];
+    let newAnsIndex = shuffledOpts.indexOf(correctText);
+    return {
+        q: q.q,
+        options: shuffledOpts,
+        ans: newAnsIndex,
+        ansText: correctText,
+        exp: q.exp
+    };
+});
     if(currentQuestions.length === 0) {
         document.getElementById('quiz-container').innerHTML = "<p style='text-align:center;padding:20px;'>Content Updating...</p>";
         return;
