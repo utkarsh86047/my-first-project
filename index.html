@@ -1273,9 +1273,9 @@ function renderQuestion() {
         let extraClass = "";
         let isSelected = userAnswers[currentIndex] !== undefined;
         
-        if(isSelected) {
-            if(optText === qData.ansText) extraClass = "correct";
-            else if(userAnswers[currentIndex] === optText) extraClass = "incorrect";
+        if(oidx=== qdata.ansS) {
+             extraClass = "correct";
+            else if(userAnswers[currentIndex] === oidx) extraClass = "incorrect";
         }
 
         const safeOptText = encodeURIComponent(optText);
