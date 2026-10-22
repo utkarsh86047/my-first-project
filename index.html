@@ -1273,15 +1273,17 @@ function renderQuestion() {
         let extraClass = "";
         let isSelected = userAnswers[currentIndex] !== undefined;
         
-        if(oidx=== qdata.ans) {
-             extraClass = "correct";
-            else if(userAnswers[currentIndex] === oidx) extraClass = "incorrect";
+        if(isSelected) {
+            if(oIdx === qData.ans) {
+                extraClass = "correct";
+            } else if(userAnswers[currentIndex] === oIdx) {
+                extraClass = "incorrect";
+            }
         }
 
         const safeOptText = encodeURIComponent(optText);
-        optsHTML += `<button class="option-btn ${extraClass}" ${isSelected ? 'disabled' : ''} onclick="selectAnswer(decodeURIComponent('${safeOptText}'))">${prefixes[oIdx]}${escapeHtml(optText)}</button>`;
+        optsHTML += `<button class="option-btn ${extraClass}" ${isSelected ? 'disabled' : ''} onclick="selectAnswer(${oIdx})">${prefixes[oIdx]}${escapeHtml(optText)}</button>`;
     });
-
     const isAnswered = userAnswers[currentIndex] !== undefined;
 
     container.innerHTML = `
